@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0072CE;
+  --color-secondary: #72BF44;
+  --color-tertiary: #F7941D;
+  --color-surface-dim: #d8dadc;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #44474e;
+  --color-bg-light: #f7f9fb;
+  --color-border-outline: #c5c6cf;
+  --color-primary-dark: #031635;
+  --color-secondary-dark: #2c694e;
+  --color-tertiary-dark: #492000;
+  
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-headline: "Montserrat", "Inter", sans-serif;
+  
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2.5rem;
+  --radius-5xl: 3.5rem;
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  .glass-card-dark {
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .border-gradient-brand {
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 1.5rem;
+    background: linear-gradient(#ffffff, #ffffff) padding-box,
+                linear-gradient(135deg, #0072CE, #72BF44, #F7941D) border-box;
+  }
+}
+
+/* Animations and smoothly expanding items */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Custom background animations */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

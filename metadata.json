@@ -1,0 +1,6 @@
+{
+  "name": "Navpahal",
+  "description": "Aware. Engage. Empower. Bridging the gap between institutional resources and grassroots needs to create a resilient ecosystem for sustainable social growth.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
