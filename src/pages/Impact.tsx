@@ -1,46 +1,50 @@
-import { Link } from "react-router-dom";
+import { SectionHeading, Container, StatusBadge, Notice, PlaceholderPanel } from "../components/ui";
+import { IMPACT_FRAMEWORK } from "../content/siteContent";
 
 export default function Impact() {
   return (
-    <section className="pt-32 pb-24 bg-[#f7f9fb] min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 md:px-10 space-y-12">
-        <div className="space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0072CE] font-headline">
-            Impact
-          </h1>
-          <div className="w-16 h-1 bg-[#0072CE]" />
-        </div>
+    <section className="pt-32 pb-24 bg-[var(--color-bg)] min-h-screen">
+      <Container>
+        <SectionHeading
+          title="Impact"
+          subtitle="Our approach to measuring and reporting social impact"
+          level={1}
+        />
 
-        <div className="space-y-6 text-[#44474e] text-base leading-relaxed">
-          <p>
-            <span className="font-bold text-[#0072CE]">DRAFT</span> &mdash; This page is a
-            placeholder. We are committed to transparency and evidence-based impact measurement.
-          </p>
-          <p>
-            As our programs mature, we will share verified impact metrics, program outcomes, and
-            community feedback here. All published statistics will be independently verified and
-            sourced from approved data collection processes.
-          </p>
-          <p>
-            No quantitative claims will be published until they have been validated through our
-            impact governance framework.
-          </p>
-        </div>
+        <div className="space-y-8 max-w-3xl">
+          <StatusBadge status="awaiting-verification" />
 
-        <div className="pt-8 border-t border-slate-100">
-          <p className="text-sm text-slate-500 italic">
-            <span className="font-bold text-[#0072CE]">DRAFT</span> &mdash; Verified impact metrics,
-            program outcomes, and community testimonials will be added in future iterations once
-            data collection processes are established.
-          </p>
-        </div>
+          <Notice variant="info">
+            No verified metrics published yet. Navpahal is committed to evidence-based impact
+            reporting. All published data will be independently verified.
+          </Notice>
 
-        <div>
-          <Link to="/" className="text-sm font-bold text-[#0072CE] hover:underline">
-            &larr; Back to Home
-          </Link>
+          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+            <h2 className="text-lg font-bold text-[var(--color-primary)] font-headline mb-3">
+              Measurement Framework
+            </h2>
+            <p className="text-sm text-[var(--color-text-muted)] mb-4">
+              The following areas will guide our impact measurement once programs are operational:
+            </p>
+            <ul className="space-y-2">
+              {IMPACT_FRAMEWORK.areas.map((area) => (
+                <li
+                  key={area}
+                  className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]"
+                >
+                  <span className="text-[var(--color-secondary)] mt-1">•</span>
+                  <span>{area}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <PlaceholderPanel
+            title="No Impact Data Available"
+            description="Verified impact metrics, program outcomes, and community feedback will be published once data collection processes are established and approved."
+          />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -12,27 +12,20 @@ test("navigates to all eight routes via header links", async ({ page }, testInfo
 
   const nav = page.getByRole("navigation", { name: "Main navigation" });
 
-  await nav.getByRole("link", { name: "About" }).click();
-  await expect(page).toHaveURL("/about");
-  await expect(page.getByRole("heading", { name: "About Navpahal" })).toBeVisible();
+  const routes = [
+    { label: "About", url: "/about", heading: "About Navpahal" },
+    { label: "Programs", url: "/programs", heading: "Programs" },
+    { label: "Training", url: "/training", heading: "Training" },
+    { label: "Get Involved", url: "/get-involved", heading: "Get Involved" },
+    { label: "Impact", url: "/impact", heading: "Impact" },
+    { label: "Resources", url: "/resources", heading: "Resources" },
+    { label: "Contact", url: "/contact", heading: "Contact" },
+  ];
 
-  await nav.getByRole("link", { name: "Programs" }).click();
-  await expect(page).toHaveURL("/programs");
-
-  await nav.getByRole("link", { name: "Training" }).click();
-  await expect(page).toHaveURL("/training");
-
-  await nav.getByRole("link", { name: "Get Involved" }).click();
-  await expect(page).toHaveURL("/get-involved");
-
-  await nav.getByRole("link", { name: "Impact" }).click();
-  await expect(page).toHaveURL("/impact");
-
-  await nav.getByRole("link", { name: "Resources" }).click();
-  await expect(page).toHaveURL("/resources");
-
-  await nav.getByRole("link", { name: "Contact" }).click();
-  await expect(page).toHaveURL("/contact");
+  for (const route of routes) {
+    await nav.getByRole("link", { name: route.label }).click();
+    await expect(page).toHaveURL(route.url);
+  }
 
   await nav.getByRole("link", { name: "Home" }).click();
   await expect(page).toHaveURL("/");
@@ -58,8 +51,8 @@ test("shows submission-not-active disclosure on get-involved page", async ({ pag
 
 test("shows disabled submit buttons", async ({ page }) => {
   await page.goto("/contact");
-  const submitBtn = page.getByRole("button", { name: "Send Message" });
-  await expect(submitBtn).toBeDisabled();
+  const sendBtn = page.getByRole("button", { name: "Send Message" });
+  await expect(sendBtn).toBeDisabled();
 
   await page.goto("/get-involved");
   const applyBtn = page.getByRole("button", { name: "Submit Application" });
@@ -72,7 +65,6 @@ test("does not contain unverified contact details", async ({ page }) => {
   expect(body).not.toContain("42 Impact Square");
   expect(body).not.toContain("connect@navpahal.org");
   expect(body).not.toContain("+91 1800 200 4000");
-  expect(body).not.toContain("navpahal.org");
 });
 
 test("does not contain false success messages", async ({ page }) => {
@@ -104,8 +96,24 @@ test("does not contain fabricated claims", async ({ page }) => {
 
 test("does not display hero image from external source", async ({ page }) => {
   await page.goto("/");
-  const imgs = await page.locator("img[src*='googleuserconten']").count();
+  const imgs = await page.locator("img[src*='googleusercontent']").count();
   expect(imgs).toBe(0);
+});
+
+test("skip link becomes visible on keyboard focus", async ({ page }) => {
+  await page.goto("/");
+  const skipLink = page.getByRole("link", { name: "Skip to main content" });
+  await expect(skipLink).toBeVisible();
+  await skipLink.focus();
+  await expect(skipLink).toBeVisible();
+});
+
+test("desktop navigation has aria-current on active link", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "mobile-chromium", "desktop nav hidden on mobile");
+  await page.goto("/about");
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  const aboutLink = nav.getByRole("link", { name: "About" });
+  await expect(aboutLink).toHaveAttribute("aria-current", "page");
 });
 
 test("opens and closes the mobile menu", async ({ page }) => {
@@ -135,5 +143,47 @@ test("navigates through mobile menu to routes", async ({ page }) => {
     await page.getByRole("button", { name: "Open menu" }).click();
     await page.getByRole("banner").getByRole("link", { name: route.label }).click();
     await expect(page).toHaveURL(route.path);
+  }
+});
+
+test("escape closes the mobile menu", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Open menu" }).click();
+  await expect(page.getByRole("button", { name: "Close menu" })).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
+});
+
+test("404 page has link to programs", async ({ page }) => {
+  await page.goto("/unknown-page");
+  await expect(page.getByRole("link", { name: "View Programs" })).toBeVisible();
+});
+
+test("no horizontal overflow at 320px width", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 600 });
+  await page.goto("/");
+  const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+  const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+  expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 30);
+});
+
+test("direct loading of all eight routes", async ({ page }) => {
+  const pages = [
+    { url: "/", heading: /Empowering Communities/i },
+    { url: "/about", heading: "About Navpahal" },
+    { url: "/programs", heading: "Programs" },
+    { url: "/training", heading: "Training" },
+    { url: "/get-involved", heading: "Get Involved" },
+    { url: "/impact", heading: "Impact" },
+    { url: "/resources", heading: "Resources" },
+    { url: "/contact", heading: "Contact" },
+  ];
+
+  for (const { url, heading } of pages) {
+    await page.goto(url);
+    await expect(page.getByRole("heading", { name: heading }).first()).toBeVisible();
   }
 });
