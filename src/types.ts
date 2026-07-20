@@ -1,14 +1,9 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export interface VolunteerRegistration {
   id: string;
   name: string;
   email: string;
   interestArea: string;
-  status: string; // 'Approved' | 'Pending'
+  status: string;
   date: string;
 }
 
@@ -20,7 +15,7 @@ export interface ExpertInquiry {
   userEmail: string;
   query: string;
   date: string;
-  status: string; // 'Answered' | 'Pending Response'
+  status: string;
 }
 
 export interface ContactMessage {
@@ -39,7 +34,7 @@ export interface Pillar {
   description: string;
   learnMoreText: string;
   details: string;
-  color: 'primary' | 'secondary' | 'tertiary';
+  color: "primary" | "secondary" | "tertiary";
 }
 
 export interface ServiceType {
@@ -47,8 +42,6 @@ export interface ServiceType {
   title: string;
   iconName: string;
   description: string;
-  statValue: number; // 0-100 percentage
-  statLabel: string;
   colorClass: string;
 }
 
@@ -56,8 +49,6 @@ export interface Expert {
   id: string;
   name: string;
   title: string;
-  imageUrl: string;
-  topVerified?: boolean;
   bio: string;
   specialty: string;
 }
