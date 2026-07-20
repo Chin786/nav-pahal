@@ -8,7 +8,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   prettierConfig,
   {
-    files: ["src/**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx}", "e2e/**/*.ts"],
     plugins: {
       "react-hooks": reactHooks,
     },

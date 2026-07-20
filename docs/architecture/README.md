@@ -18,15 +18,28 @@ The application is a **client-side React SPA** built with:
 | `/about` | About | Mission and vision (placeholder) |
 | `/programs` | Programs | Program listings (placeholder) |
 | `/training` | Training | Training content (placeholder) |
-| `/get-involved` | Get Involved | Volunteer registration form |
+| `/get-involved` | Get Involved | Volunteer registration (disabled state) |
 | `/impact` | Impact | Impact metrics (placeholder) |
 | `/resources` | Resources | Resource center (placeholder) |
-| `/contact` | Contact | Contact form and information |
+| `/contact` | Contact | Contact form (disabled state) |
 | `*` | NotFound | 404 page |
 
-### Data Persistence
+### Form Submissions
 
-All form submissions are stored in **browser `localStorage`** only. This is explicitly not production persistence and will be replaced when a backend is introduced.
+All forms (contact, volunteer, newsletter) are displayed in a **disabled state** with a visible disclosure:
+
+> "Online submissions are not yet active. No information entered here is transmitted to Navpahal."
+
+- Inputs are rendered but **disabled** and non-interactive
+- Submit buttons are **disabled**
+- No personal data is collected, stored, or transmitted
+- No `localStorage` persistence is used
+
+### Contact Details
+
+No contact details are displayed. The placeholder text reads:
+
+> "Official contact details will be published after verification."
 
 ### What Does Not Exist Yet
 
@@ -36,6 +49,7 @@ All form submissions are stored in **browser `localStorage`** only. This is expl
 - No CMS or admin interface
 - No emergency SOS capability
 - No medical consultation workflow
+- No data collection or form submission processing
 
 ## Target Architecture — Modular Monolith
 
@@ -54,6 +68,7 @@ The long-term target is a **modular monolith** backend with:
 3. **All quantitative claims** must be verified before publication
 4. **No automatic approvals** for volunteers or experts
 5. **No simulated data** presented as production data
+6. **No form submissions** until a backend, privacy process, and data handling policy are in place
 
 ## Development Workflow
 

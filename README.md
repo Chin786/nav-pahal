@@ -9,14 +9,18 @@ A community empowerment platform bridging institutional resources with grassroot
 This repository contains the **frontend MVP** of the Navpahal platform. It is a client-side React single-page application with:
 
 - Public pages: Home, About, Programs, Training, Get Involved, Impact, Resources, Contact
-- Volunteer registration form (browser localStorage only)
-- Contact form (browser localStorage only)
+- Contact form displayed in **disabled state** — submissions are not active
+- Volunteer registration form displayed in **disabled state** — submissions are not active
+- Newsletter form displayed in **disabled state** — submissions are not active
+- No personal data is collected, stored, or transmitted
 - Responsive design for mobile and desktop
 - Keyboard-accessible navigation
 
-### Service Boundary
+### Important Notices
 
-> In an active emergency, contact the appropriate official emergency service immediately. Navpahal provides awareness, preparedness and community training; it does not replace doctors, hospitals, police, fire services, ambulances or professional emergency responders.
+> **Submission Disclosure:** Online submissions are not yet active. No information entered here is transmitted to Navpahal.
+
+> **Service Boundary:** In an active emergency, contact the appropriate official emergency service immediately. Navpahal provides awareness, preparedness and community training; it does not replace doctors, hospitals, police, fire services, ambulances or professional emergency responders.
 
 ## Prerequisites
 
@@ -46,15 +50,15 @@ The app runs at `http://localhost:3000`.
 | `npm run test` | Run unit tests with Vitest |
 | `npm run test:watch` | Run tests in watch mode |
 | `npm run test:coverage` | Run tests with coverage report |
-| `npm run test:e2e` | Run Playwright end-to-end tests |
+| `npm run test:e2e` | Run Playwright e2e tests against production build |
 
 ## Architecture Direction
 
 See [docs/architecture/README.md](docs/architecture/README.md) for the full architecture plan.
 
-- **Today**: Frontend-only SPA, no backend, no database
+- **Today**: Frontend-only SPA, no backend, no database, no data collection
 - **Target**: Modular monolith backend introduced through approved vertical slices
-- **Not yet**: Authentication, API, admin panel, emergency features
+- **Not yet**: Authentication, API, admin panel, emergency features, form submissions
 
 ## Branch Rules
 

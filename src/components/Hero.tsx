@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Users, BookOpen, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Hero() {
@@ -64,24 +64,32 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Right Image/Graphic */}
+        {/* Right Visual Placeholder */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           className="relative group"
         >
-          {/* Background fuzzy shadows */}
           <div className="absolute -inset-4 bg-gradient-to-tr from-[#00B5E2] to-[#72BF44] opacity-10 rounded-[3rem] blur-2xl group-hover:opacity-15 transition-opacity duration-500" />
 
-          {/* Frame mockup for the community photo */}
-          <div className="relative rounded-[2.5rem] md:rounded-[3rem] overflow-hidden aspect-[4/3] shadow-2xl border-4 border-white bg-slate-100">
-            <img
-              alt="Diverse community group working together"
-              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmGi0fo44x4iWO-h1iYIIQMtTFOXEcPC6Nx7o23K335WNlevqUiZXLEtW_vJ6EJgmlV3qunjiTSgXI4HHs1knLRu--STy7rVNCkYGsPtQLTcX3kEa-7k13SXahp98iq_pCL_d12aLuzie2ZWRVtMEuJYzpIKntsoAwFGJGC6vhk3XZa7ugp0ICcBBoVNSq3UW-zcd613JMzgTSWQj2uyuDrYa4IZrAnlAJhTZ1tzW1BsWGU9_jgZBalOpuK42lhjr2miP1BJwdVmc"
-              referrerPolicy="no-referrer"
-            />
+          <div className="relative rounded-[2.5rem] md:rounded-[3rem] overflow-hidden aspect-[4/3] shadow-2xl border-4 border-white bg-gradient-to-br from-[#0072CE]/10 via-[#f7f9fb] to-[#72BF44]/10 flex items-center justify-center">
+            <div className="flex flex-col items-center gap-6 text-center px-8">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-[#0072CE]/15 flex items-center justify-center text-[#0072CE]">
+                  <Users className="w-8 h-8" />
+                </div>
+                <div className="w-16 h-16 rounded-2xl bg-[#72BF44]/15 flex items-center justify-center text-[#72BF44]">
+                  <BookOpen className="w-8 h-8" />
+                </div>
+                <div className="w-16 h-16 rounded-2xl bg-[#F7941D]/15 flex items-center justify-center text-[#F7941D]">
+                  <ShieldCheck className="w-8 h-8" />
+                </div>
+              </div>
+              <p className="text-sm font-bold text-[#44474e] uppercase tracking-widest">
+                Community &middot; Training &middot; Preparedness
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
@@ -10,6 +10,10 @@ function renderApp(route = "/") {
     </MemoryRouter>,
   );
 }
+
+beforeEach(() => {
+  localStorage.clear();
+});
 
 describe("Header navigation", () => {
   it("renders the NAVPAHAL brand", () => {
@@ -61,6 +65,46 @@ describe("Service boundary", () => {
     expect(boundary).toHaveTextContent("fire services");
     expect(boundary).toHaveTextContent("ambulances");
     expect(boundary).toHaveTextContent("professional emergency responders");
+  });
+});
+
+describe("Submission-not-active disclosure", () => {
+  it("shows disclosure on contact page", () => {
+    renderApp("/contact");
+    expect(
+      screen.getAllByText(/Online submissions are not yet active/).length,
+    ).toBeGreaterThanOrEqual(1);
+  });
+
+  it("shows disclosure on get-involved page", () => {
+    renderApp("/get-involved");
+    expect(
+      screen.getAllByText(/Online submissions are not yet active/).length,
+    ).toBeGreaterThanOrEqual(1);
+  });
+
+  it("shows disabled submit button on contact form", () => {
+    renderApp("/contact");
+    const btn = screen.getByRole("button", { name: "Send Message" });
+    expect(btn).toBeDisabled();
+  });
+
+  it("shows disabled submit button on volunteer form", () => {
+    renderApp("/get-involved");
+    const btn = screen.getByRole("button", { name: "Submit Application" });
+    expect(btn).toBeDisabled();
+  });
+});
+
+describe("No localStorage persistence", () => {
+  it("does not store contact messages in localStorage", () => {
+    renderApp("/contact");
+    expect(localStorage.getItem("navpahal_contact_messages")).toBeNull();
+  });
+
+  it("does not store volunteer registrations in localStorage", () => {
+    renderApp("/get-involved");
+    expect(localStorage.getItem("navpahal_volunteers")).toBeNull();
   });
 });
 
@@ -132,6 +176,49 @@ describe("Removal of unsafe claims", () => {
     expect(body).not.toContain("Admin Panel");
     expect(body).not.toContain("Seed Demo");
     expect(body).not.toContain("developer console");
+  });
+
+  it("does not display false success messages", () => {
+    renderApp();
+    const body = document.body.textContent || "";
+    expect(body).not.toContain("Message Sent Successfully");
+    expect(body).not.toContain("Registration Submitted");
+    expect(body).not.toContain("application has been received");
+    expect(body).not.toContain("Subscribed successfully");
+  });
+
+  it("does not display unverified contact details", () => {
+    renderApp();
+    const body = document.body.textContent || "";
+    expect(body).not.toContain("42 Impact Square");
+    expect(body).not.toContain("connect@navpahal.org");
+    expect(body).not.toContain("+91 1800 200 4000");
+  });
+
+  it("displays unverified contact placeholder instead", () => {
+    renderApp("/contact");
+    expect(
+      screen.getAllByText(/Official contact details will be published after verification/).length,
+    ).toBeGreaterThanOrEqual(1);
+  });
+
+  it("does not display Recent Registrations", () => {
+    renderApp();
+    const body = document.body.textContent || "";
+    expect(body).not.toContain("Recent Registrations");
+  });
+
+  it("does not display hero image from external source", () => {
+    renderApp();
+    const imgs = document.querySelectorAll("img[src*='googleusercontent']");
+    expect(imgs.length).toBe(0);
+  });
+
+  it("displays submission-not-active disclosure", () => {
+    renderApp();
+    expect(
+      screen.getAllByText(/Online submissions are not yet active/).length,
+    ).toBeGreaterThanOrEqual(1);
   });
 });
 

@@ -1,20 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Share2, Globe, ArrowUpRight, CheckCircle2, ChevronRight } from "lucide-react";
+import { Share2, AlertCircle, ChevronRight } from "lucide-react";
+
+const FORM_DISCLOSURE =
+  "Online submissions are not yet active. No information entered here is transmitted to Navpahal.";
 
 export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = React.useState("");
-  const [subscribed, setSubscribed] = React.useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newsletterEmail.trim() || !newsletterEmail.includes("@")) {
-      return;
-    }
-    setSubscribed(true);
-    setNewsletterEmail("");
-    setTimeout(() => setSubscribed(false), 4000);
-  };
 
   const currentYear = new Date().getFullYear();
 
@@ -49,15 +41,6 @@ export default function Footer() {
                 title="Share this page"
               >
                 <Share2 className="w-4 h-4" />
-              </a>
-              <a
-                href="https://navpahal.org"
-                target="_blank"
-                rel="noreferrer"
-                className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-[#72BF44] hover:text-white transition-all text-slate-400"
-                title="Visit Navpahal Website"
-              >
-                <Globe className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -144,7 +127,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter subscription form */}
+          {/* Newsletter section — disabled */}
           <div className="space-y-5">
             <h6 className="font-extrabold text-sm text-[#F7941D] uppercase tracking-widest">
               Newsletter
@@ -153,31 +136,33 @@ export default function Footer() {
               Subscribe for quarterly updates on community programs and impact activities.
             </p>
 
-            <form onSubmit={handleSubscribe} className="space-y-3 text-xs">
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-3 text-xs">
+              <div className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] text-slate-400 flex items-center gap-1.5">
+                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                <span>{FORM_DISCLOSURE}</span>
+              </div>
               <div className="relative">
+                <label htmlFor="footer-newsletter-email" className="sr-only">
+                  Your Email
+                </label>
                 <input
+                  id="footer-newsletter-email"
                   type="email"
                   placeholder="Your Email"
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
-                  className="bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 w-full focus:ring-1 focus:ring-[#F7941D] text-white placeholder:text-white/30 text-xs font-semibold focus:outline-none"
-                  required
+                  disabled
+                  className="bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 w-full text-white placeholder:text-white/30 text-xs font-semibold"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#F7941D] to-[#e67e17] text-white font-bold py-3.5 rounded-xl hover:opacity-95 transition-all shadow-lg flex items-center justify-center gap-1.5"
+                disabled
+                className="w-full bg-slate-700 text-slate-400 font-bold py-3.5 rounded-xl cursor-not-allowed flex items-center justify-center gap-1.5"
+                title="Submissions are not yet active"
               >
                 <span>Subscribe</span>
-                <ArrowUpRight className="w-4 h-4" />
               </button>
-
-              {subscribed && (
-                <div className="flex items-center gap-1.5 text-xs text-lime-400 font-bold bg-white/5 p-2 rounded-lg animate-pulse">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>Subscribed successfully!</span>
-                </div>
-              )}
             </form>
           </div>
         </div>

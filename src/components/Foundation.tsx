@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Eye, Rocket, Quote, RefreshCw } from "lucide-react";
+import { Eye, Rocket, Quote, RefreshCw, Heart } from "lucide-react";
 
 const PHILOSOPHY_QUOTES = [
   {
@@ -147,16 +147,17 @@ export default function Foundation() {
             </div>
           </div>
 
-          {/* Right Side Image & Rotated Card */}
+          {/* Right Side Visual Placeholder & Rotated Card */}
           <div className="relative flex justify-center items-center h-[500px]">
-            {/* Background Image Container */}
-            <div className="w-full max-w-md aspect-square rounded-[2.5rem] md:rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl rotate-3 hover:rotate-1 transition-transform duration-500 bg-slate-200">
-              <img
-                alt="Community unity hands"
-                className="w-full h-full object-cover grayscale-[30%] hover:scale-[1.03] transition-transform duration-700"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmPkKz5XnYYtVkQTeb4i2m4L4KOgC8SCVsnxe_A-WRXAfRxNbQWxkcprnchGNLfMPaY0qiII_P_8DXMV0mlJdtYrGXdTmWB0yMzxS0IkPvKk8qs5TMZW8acnhz_PjKBDQFwanjGepsIK2Qt1_aByJFLQsHvbo3rA8TrBcUX3HFCQoRxVYez3tvnfTWdBy2j7wlMbADjniIjroX8eGNOya7HKGviKgRnksBs7mrKkZJs_pkoddKqoLB2TBYAc4ndDqbVWgwcf7m5y4"
-                referrerPolicy="no-referrer"
-              />
+            <div className="w-full max-w-md aspect-square rounded-[2.5rem] md:rounded-[3rem] border-8 border-white shadow-2xl rotate-3 hover:rotate-1 transition-transform duration-500 bg-gradient-to-br from-[#0072CE]/10 via-white to-[#72BF44]/10 flex items-center justify-center">
+              <div className="flex flex-col items-center gap-4 text-center px-6">
+                <div className="w-20 h-20 rounded-full bg-[#0072CE]/15 flex items-center justify-center text-[#0072CE]">
+                  <Heart className="w-10 h-10" />
+                </div>
+                <p className="text-sm font-bold text-[#44474e] uppercase tracking-widest">
+                  Community &middot; Unity &middot; Impact
+                </p>
+              </div>
             </div>
 
             {/* Overlapping Glassmorphic Quote */}

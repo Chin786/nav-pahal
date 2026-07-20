@@ -1,62 +1,10 @@
-import React from "react";
 import { motion } from "motion/react";
-import { MapPin, Mail, Phone, Send, CheckCircle2, AlertCircle } from "lucide-react";
-import { ContactMessage } from "../types";
+import { MapPin, Mail, Phone, Send, AlertCircle } from "lucide-react";
+
+const FORM_DISCLOSURE =
+  "Online submissions are not yet active. No information entered here is transmitted to Navpahal.";
 
 export default function Contact() {
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [subject, setSubject] = React.useState("");
-  const [message, setMessage] = React.useState("");
-
-  const [success, setSuccess] = React.useState(false);
-  const [errorMsg, setErrorMsg] = React.useState("");
-
-  const [messages, setMessages] = React.useState<ContactMessage[]>(() => {
-    try {
-      const loaded = localStorage.getItem("navpahal_contact_messages");
-      return loaded ? JSON.parse(loaded) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const handleMessageSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!firstName.trim() || !lastName.trim() || !subject.trim() || !message.trim()) {
-      setErrorMsg("All fields are required. Please fill them in.");
-      return;
-    }
-
-    const newMessage: ContactMessage = {
-      id: `msg-${Date.now()}`,
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      subject: subject.trim(),
-      message: message.trim(),
-      date: new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-    };
-
-    const updated = [newMessage, ...messages];
-    setMessages(updated);
-    localStorage.setItem("navpahal_contact_messages", JSON.stringify(updated));
-
-    setFirstName("");
-    setLastName("");
-    setSubject("");
-    setMessage("");
-    setErrorMsg("");
-    setSuccess(true);
-
-    setTimeout(() => {
-      setSuccess(false);
-    }, 4000);
-  };
-
   return (
     <section
       id="connect-section"
@@ -82,7 +30,7 @@ export default function Contact() {
               <div className="space-y-1">
                 <h5 className="text-lg font-bold text-[#0072CE] font-headline">Headquarters</h5>
                 <p className="text-[#44474e] text-sm leading-relaxed">
-                  42 Impact Square, Innovation District, New Delhi, 110001
+                  Official contact details will be published after verification.
                 </p>
               </div>
             </div>
@@ -93,7 +41,9 @@ export default function Contact() {
               </div>
               <div className="space-y-1">
                 <h5 className="text-lg font-bold text-[#0072CE] font-headline">Email Us</h5>
-                <p className="text-[#44474e] text-sm">connect@navpahal.org</p>
+                <p className="text-[#44474e] text-sm">
+                  Official contact details will be published after verification.
+                </p>
               </div>
             </div>
 
@@ -103,97 +53,105 @@ export default function Contact() {
               </div>
               <div className="space-y-1">
                 <h5 className="text-lg font-bold text-[#0072CE] font-headline">Phone</h5>
-                <p className="text-[#44474e] text-sm">+91 1800 200 4000</p>
+                <p className="text-[#44474e] text-sm">
+                  Official contact details will be published after verification.
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         <div className="bg-white p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-100">
-          <form onSubmit={handleMessageSubmit} className="space-y-6">
-            {errorMsg && (
-              <div className="p-3 bg-red-50 text-red-600 rounded-xl text-xs font-semibold flex items-center gap-1.5">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                <span>{errorMsg}</span>
-              </div>
-            )}
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className="space-y-6"
+            aria-label="Contact form (not yet active)"
+          >
+            <div className="p-3 bg-amber-50 text-amber-800 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-amber-200">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{FORM_DISCLOSURE}</span>
+            </div>
 
-            {success ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="p-8 text-center space-y-3 text-emerald-800 bg-emerald-50 rounded-2xl border border-emerald-100"
-              >
-                <CheckCircle2 className="w-12 h-12 text-[#72BF44] mx-auto animate-bounce" />
-                <h5 className="font-bold text-sm">Message Sent Successfully!</h5>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Thank you for reaching out. We will address your inquiry shortly.
-                </p>
-              </motion.div>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="col-span-2 sm:col-span-1 space-y-2">
-                    <label className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block">
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="John"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="w-full border border-slate-200 focus:outline-[#0072CE] focus:ring-1 focus:ring-[#0072CE] rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm"
-                    />
-                  </div>
-                  <div className="col-span-2 sm:col-span-1 space-y-2">
-                    <label className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Doe"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      className="w-full border border-slate-200 focus:outline-[#0072CE] focus:ring-1 focus:ring-[#0072CE] rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block">
-                    Subject
+            <motion.div
+              initial={{ opacity: 1 }}
+              className="space-y-6 opacity-60 pointer-events-none"
+              aria-disabled="true"
+            >
+              <div className="grid grid-cols-2 gap-6">
+                <div className="col-span-2 sm:col-span-1 space-y-2">
+                  <label
+                    htmlFor="contact-first-name"
+                    className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block"
+                  >
+                    First Name
                   </label>
                   <input
+                    id="contact-first-name"
                     type="text"
-                    placeholder="Partnership Inquiry"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    className="w-full border border-slate-200 focus:outline-[#0072CE] focus:ring-1 focus:ring-[#0072CE] rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm"
+                    placeholder="John"
+                    disabled
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm"
                   />
                 </div>
-
-                <div className="space-y-2">
-                  <label className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block">
-                    Message
+                <div className="col-span-2 sm:col-span-1 space-y-2">
+                  <label
+                    htmlFor="contact-last-name"
+                    className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block"
+                  >
+                    Last Name
                   </label>
-                  <textarea
-                    rows={4}
-                    placeholder="Tell us how we can collaborate..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="w-full border border-slate-200 focus:outline-[#0072CE] focus:ring-1 focus:ring-[#0072CE] rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm resize-none"
+                  <input
+                    id="contact-last-name"
+                    type="text"
+                    placeholder="Doe"
+                    disabled
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm"
                   />
                 </div>
+              </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-[#0072CE] to-[#00B5E2] text-white py-4 rounded-xl font-bold text-sm hover:opacity-95 shadow-md flex items-center justify-center gap-2 mt-4"
+              <div className="space-y-2">
+                <label
+                  htmlFor="contact-subject"
+                  className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block"
                 >
-                  <span>Send Message</span>
-                  <Send className="w-4 h-4" />
-                </button>
-              </>
-            )}
+                  Subject
+                </label>
+                <input
+                  id="contact-subject"
+                  type="text"
+                  placeholder="Partnership Inquiry"
+                  disabled
+                  className="w-full border border-slate-200 rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="contact-message"
+                  className="font-extrabold text-[#0072CE] text-[10px] uppercase tracking-wider block"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="contact-message"
+                  rows={4}
+                  placeholder="Tell us how we can collaborate..."
+                  disabled
+                  className="w-full border border-slate-200 rounded-xl px-4 py-3.5 bg-[#f7f9fb] text-slate-800 text-xs sm:text-sm resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled
+                className="w-full bg-slate-300 text-white py-4 rounded-xl font-bold text-sm cursor-not-allowed flex items-center justify-center gap-2 mt-4"
+                title="Submissions are not yet active"
+              >
+                <span>Send Message</span>
+                <Send className="w-4 h-4" />
+              </button>
+            </motion.div>
           </form>
         </div>
       </div>
