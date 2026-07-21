@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
 
@@ -111,14 +111,14 @@ describe("Header navigation", () => {
 });
 
 describe("Primary calls to action", () => {
-  it("renders Join the Movement button on home page", () => {
+  it("renders Learn About Our Programs button on home page", () => {
     renderApp();
-    expect(screen.getByRole("link", { name: "Join the Movement" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Learn About Our Programs" })).toBeInTheDocument();
   });
 
-  it("renders Our Programs link on home page", () => {
+  it("renders How to Get Involved link on home page", () => {
     renderApp();
-    expect(screen.getByRole("link", { name: "Our Programs" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "How to Get Involved" })).toBeInTheDocument();
   });
 });
 
@@ -281,6 +281,33 @@ describe("Removal of unsafe claims", () => {
     renderApp();
     const imgs = document.querySelectorAll("img[src*='googleusercontent']");
     expect(imgs.length).toBe(0);
+  });
+});
+
+describe("Foundation accordion accessibility", () => {
+  it("renders accordion buttons with aria-expanded, aria-controls, and type=button", () => {
+    renderApp();
+    const buttons = screen.getAllByRole("button", { name: "Read Deeply" });
+    expect(buttons.length).toBe(2);
+    buttons.forEach((btn) => {
+      expect(btn).toHaveAttribute("aria-expanded", "false");
+      expect(btn).toHaveAttribute("type", "button");
+      expect(btn.className).toContain("focus-ring");
+    });
+    expect(buttons[0]).toHaveAttribute("aria-controls", "vision-panel");
+    expect(buttons[1]).toHaveAttribute("aria-controls", "mission-panel");
+  });
+
+  it("renders vision panel with region role after expanding", async () => {
+    renderApp();
+    const buttons = screen.getAllByRole("button", { name: "Read Deeply" });
+    buttons[0].click();
+    await waitFor(() => {
+      const visionPanel = document.getElementById("vision-panel");
+      expect(visionPanel).toBeInTheDocument();
+      expect(visionPanel).toHaveAttribute("role", "region");
+      expect(visionPanel).toHaveAttribute("aria-labelledby", "vision-heading");
+    });
   });
 });
 

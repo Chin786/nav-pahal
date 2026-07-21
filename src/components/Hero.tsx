@@ -1,7 +1,12 @@
 import { motion } from "motion/react";
 import { ArrowRight, Users, BookOpen, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import { BRAND } from "../content/siteContent";
+import { HERO_CONTENT, BRAND } from "../content/siteContent";
+import { StatusBadge } from "../components/ui";
+
+const gradientText = "One Initiative";
+const titleBefore = HERO_CONTENT.title.slice(0, HERO_CONTENT.title.indexOf(gradientText));
+const titleAfter = HERO_CONTENT.title.slice(titleBefore.length + gradientText.length);
 
 export default function Hero() {
   return (
@@ -16,21 +21,24 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-6 md:space-y-8"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-[var(--color-secondary)]/20 text-[var(--color-secondary)] rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm">
-            <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-secondary)] animate-pulse" />
-            Community Empowerment
+          <div className="flex items-center gap-3 flex-wrap">
+            <StatusBadge status={HERO_CONTENT.status} />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-[var(--color-secondary)]/20 text-[var(--color-secondary)] rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm">
+              <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-secondary)] animate-pulse" />
+              {HERO_CONTENT.tagline}
+            </div>
           </div>
 
           <h1 className="text-4.5xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--color-primary)] font-headline leading-[1.15]">
-            Empowering Communities,{" "}
+            {titleBefore}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00B5E2] to-[var(--color-primary)]">
-              One Initiative
-            </span>{" "}
-            at a Time
+              {gradientText}
+            </span>
+            {titleAfter}
           </h1>
 
           <p className="text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl leading-relaxed">
-            {BRAND.missionStatement}
+            {HERO_CONTENT.description}
           </p>
 
           <div className="flex items-center gap-3">
@@ -42,16 +50,16 @@ export default function Hero() {
 
           <div className="flex flex-wrap items-center gap-5 pt-2">
             <Link
-              to="/get-involved"
+              to={HERO_CONTENT.ctaPrimary.to}
               className="bg-gradient-to-r from-[var(--color-accent)] to-[#e67e17] text-white px-8 py-4 rounded-xl font-bold text-sm tracking-wide transition-all shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20 hover:-translate-y-0.5 active:translate-y-0 active:scale-98"
             >
-              Join the Movement
+              {HERO_CONTENT.ctaPrimary.label}
             </Link>
             <Link
-              to="/programs"
+              to={HERO_CONTENT.ctaSecondary.to}
               className="flex items-center gap-2 text-[var(--color-primary)] font-bold text-sm hover:translate-x-1.5 transition-transform"
             >
-              <span>Our Programs</span>
+              <span>{HERO_CONTENT.ctaSecondary.label}</span>
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>

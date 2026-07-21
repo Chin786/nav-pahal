@@ -71,7 +71,6 @@ The font stack uses Inter for body text and Montserrat for headings, loaded from
 Located in `src/components/ui/`:
 
 - **Container** — Wraps content with max-width and responsive padding.
-- **PageHero** — Page-level hero section with title, subtitle, and optional children.
 - **SectionHeading** — Section heading with optional tag, subtitle, alignment, and heading level.
 - **ButtonLink** — Styled link button with variants: primary, secondary, accent, outline.
 - **Notice** — Alert banner with variants: info, success, warning, error. Supports dismiss.
@@ -86,8 +85,9 @@ Located in `src/components/ui/`:
 - Navigation uses `<nav>` with `aria-label="Main navigation"`
 - Active nav links use `aria-current="page"`
 - Mobile menu uses `aria-expanded` and `aria-controls`
-- Escape key closes the mobile menu
-- Focus returns to menu button after Escape
+- Escape key closes the mobile menu; focus returns to menu button
+- Foundation accordion uses semantic `<button>` elements with `aria-expanded` and `aria-controls`
+- Pillar detail modal: Escape closes, focus trap, `aria-labelledby`, backdrop click closes, focus returns to trigger
 - All decorative icons use `aria-hidden="true"`
 - Icon-only controls have accessible names via `aria-label`
 - Forms have clear `aria-label` indicating they are not yet active

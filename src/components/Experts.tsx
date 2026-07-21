@@ -1,6 +1,7 @@
 import { EXPERTS_DATA } from "../data";
 import { Users } from "lucide-react";
-import { StatusBadge } from "./ui";
+import { StatusBadge, Notice } from "./ui";
+import { EXPERTS_STATUS } from "../content/siteContent";
 
 export default function Experts() {
   return (
@@ -21,13 +22,17 @@ export default function Experts() {
             <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto text-slate-400">
               <Users className="w-8 h-8" aria-hidden="true" />
             </div>
-            <StatusBadge status="under-development" />
+            <StatusBadge status={EXPERTS_STATUS} />
             <h3 className="font-bold text-slate-700 text-lg">Trainer Profiles Coming Soon</h3>
             <p className="text-sm text-slate-500 max-w-md mx-auto">
               We are building our trainer and mentor network. Verified expert profiles will be
               displayed here once they have provided publication consent and completed our
               onboarding process.
             </p>
+            <Notice variant="info">
+              No trainer or mentor network currently exists. Expert profiles will be published once
+              individuals have provided consent and completed onboarding.
+            </Notice>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">

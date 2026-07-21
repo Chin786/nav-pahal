@@ -1,6 +1,8 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Eye, Rocket, Quote, RefreshCw, Heart } from "lucide-react";
+import { FOUNDATION_CONTENT, FOUNDATION_SUBTITLE } from "../content/siteContent";
+import { StatusBadge } from "../components/ui";
 
 const PHILOSOPHY_QUOTES = [
   {
@@ -43,17 +45,18 @@ export default function Foundation() {
               <h2 className="text-4xl font-extrabold text-[var(--color-primary)] font-headline">
                 Our Foundation
               </h2>
-              <p className="text-[var(--color-text-muted)] text-sm sm:text-base leading-relaxed">
-                Navpahal&apos;s foundations are structured to drive transparency, thoughtful
-                execution, and deep systemic improvements in grassroots community welfare.
-              </p>
+              <div className="flex items-center gap-3">
+                <p className="text-[var(--color-text-muted)] text-sm sm:text-base leading-relaxed">
+                  {FOUNDATION_SUBTITLE}
+                </p>
+                <StatusBadge status={FOUNDATION_CONTENT.status} />
+              </div>
             </div>
 
             <div className="grid gap-6">
               {/* Vision Card */}
               <motion.div
-                onClick={() => setVisionExpanded(!visionExpanded)}
-                className="glass-card p-6 sm:p-8 rounded-2xl border-l-[6px] border-[var(--color-primary)] shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden"
+                className="glass-card p-6 sm:p-8 rounded-2xl border-l-[6px] border-[var(--color-primary)] shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden"
                 whileHover={{ scale: 1.01 }}
               >
                 <div className="flex items-start gap-4">
@@ -62,16 +65,24 @@ export default function Foundation() {
                   </div>
                   <div className="space-y-2 flex-1">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-lg font-bold text-[var(--color-text)] font-headline">
+                      <h4
+                        id="vision-heading"
+                        className="text-lg font-bold text-[var(--color-text)] font-headline"
+                      >
                         Our Vision
                       </h4>
-                      <span className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider">
+                      <button
+                        type="button"
+                        aria-expanded={visionExpanded}
+                        aria-controls="vision-panel"
+                        onClick={() => setVisionExpanded(!visionExpanded)}
+                        className="text-xs font-bold text-[var(--color-primary)] uppercase tracking-wider focus-ring"
+                      >
                         {visionExpanded ? "Show Less" : "Read Deeply"}
-                      </span>
+                      </button>
                     </div>
                     <p className="text-slate-600 text-sm leading-relaxed">
-                      To build a world where every community has the tools, network, and expertise
-                      to drive their own sustainable evolution.
+                      {FOUNDATION_CONTENT.value.vision.summary}
                     </p>
 
                     <AnimatePresence>
@@ -81,18 +92,19 @@ export default function Foundation() {
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="pt-4 border-t border-slate-100 mt-3 text-xs text-slate-500 space-y-2 leading-relaxed"
                         >
-                          <p>
-                            We aim to bypass traditional delays in resource distribution. Through
-                            technology frameworks and community partnerships, we enable verification
-                            of grassroots needs to secure matching with corporate capital and expert
-                            mentoring.
-                          </p>
-                          <p className="font-semibold text-[var(--color-primary)]">
-                            &bull; Decentralized growth &bull; Audit-mapped pipeline &bull;
-                            Inclusive action
-                          </p>
+                          <div
+                            id="vision-panel"
+                            role="region"
+                            aria-labelledby="vision-heading"
+                            className="pt-4 border-t border-slate-100 mt-3 text-xs text-slate-500 space-y-2 leading-relaxed"
+                          >
+                            <p>{FOUNDATION_CONTENT.value.vision.details}</p>
+                            <p className="font-semibold text-[var(--color-primary)]">
+                              &bull; Decentralized growth &bull; Audit-mapped pipeline &bull;
+                              Inclusive action
+                            </p>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -102,8 +114,7 @@ export default function Foundation() {
 
               {/* Mission Card */}
               <motion.div
-                onClick={() => setMissionExpanded(!missionExpanded)}
-                className="glass-card p-6 sm:p-8 rounded-2xl border-l-[6px] border-[var(--color-secondary)] shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden"
+                className="glass-card p-6 sm:p-8 rounded-2xl border-l-[6px] border-[var(--color-secondary)] shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden"
                 whileHover={{ scale: 1.01 }}
               >
                 <div className="flex items-start gap-4">
@@ -112,16 +123,24 @@ export default function Foundation() {
                   </div>
                   <div className="space-y-2 flex-1">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-lg font-bold text-[var(--color-text)] font-headline">
+                      <h4
+                        id="mission-heading"
+                        className="text-lg font-bold text-[var(--color-text)] font-headline"
+                      >
                         Our Mission
                       </h4>
-                      <span className="text-xs font-bold text-[var(--color-secondary)] uppercase tracking-wider">
+                      <button
+                        type="button"
+                        aria-expanded={missionExpanded}
+                        aria-controls="mission-panel"
+                        onClick={() => setMissionExpanded(!missionExpanded)}
+                        className="text-xs font-bold text-[var(--color-secondary)] uppercase tracking-wider focus-ring"
+                      >
                         {missionExpanded ? "Show Less" : "Read Deeply"}
-                      </span>
+                      </button>
                     </div>
                     <p className="text-slate-600 text-sm leading-relaxed">
-                      Systemizing social impact through innovative technology, community training
-                      networks, and cross-sector collaboration.
+                      {FOUNDATION_CONTENT.value.mission.summary}
                     </p>
 
                     <AnimatePresence>
@@ -131,18 +150,19 @@ export default function Foundation() {
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="pt-4 border-t border-slate-100 mt-3 text-xs text-slate-500 space-y-2 leading-relaxed"
                         >
-                          <p>
-                            By integrating our four pillars (Citizens, Volunteers, Trainers &amp;
-                            Mentors, Partners) under one cohesive engine, we accelerate skills
-                            development, scale community training, and drive structural
-                            accountability.
-                          </p>
-                          <p className="font-semibold text-[var(--color-secondary)]">
-                            &bull; Direct execution &bull; Cross-sector synergy &bull; Capacity
-                            building
-                          </p>
+                          <div
+                            id="mission-panel"
+                            role="region"
+                            aria-labelledby="mission-heading"
+                            className="pt-4 border-t border-slate-100 mt-3 text-xs text-slate-500 space-y-2 leading-relaxed"
+                          >
+                            <p>{FOUNDATION_CONTENT.value.mission.details}</p>
+                            <p className="font-semibold text-[var(--color-secondary)]">
+                              &bull; Direct execution &bull; Cross-sector synergy &bull; Capacity
+                              building
+                            </p>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -179,6 +199,7 @@ export default function Foundation() {
                   onClick={cycleQuote}
                   className="absolute -right-14 p-2 text-slate-400 hover:text-[var(--color-primary)] rounded-full hover:bg-slate-100 transition-all"
                   title="Cycle Philosophy Quotes"
+                  aria-label="Show next community quote"
                 >
                   <RefreshCw className="w-4 h-4 animate-spin-slow" aria-hidden="true" />
                 </button>

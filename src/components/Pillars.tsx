@@ -2,10 +2,14 @@ import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Users, Heart, GraduationCap, Building2, ExternalLink, X, CheckCircle } from "lucide-react";
 import { PILLARS_DATA } from "../data";
+import { StatusBadge } from "../components/ui";
 import { Pillar } from "../types";
 
 export default function Pillars() {
   const [selectedPillar, setSelectedPillar] = React.useState<Pillar | null>(null);
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  const triggerButtonRefs = React.useRef<Map<string, HTMLButtonElement>>(new Map());
+  const modalRef = React.useRef<HTMLDivElement>(null);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -73,18 +77,75 @@ export default function Pillars() {
     }
   };
 
+  const closeModal = React.useCallback(() => {
+    setSelectedPillar(null);
+  }, []);
+
+  React.useEffect(() => {
+    if (!selectedPillar) return;
+
+    document.body.style.overflow = "hidden";
+
+    const timer = setTimeout(() => {
+      closeButtonRef.current?.focus();
+    }, 0);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+        return;
+      }
+
+      if (e.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    const refs = triggerButtonRefs.current;
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
+      clearTimeout(timer);
+      const pillarId = selectedPillar?.id;
+      if (pillarId) {
+        const trigger = refs.get(pillarId);
+        trigger?.focus();
+      }
+    };
+  }, [selectedPillar, closeModal]);
+
   return (
     <section id="pillars-section" className="py-24 bg-white scroll-mt-20 leading-tight">
       <div className="max-w-[var(--content-max-width)] mx-auto px-6 md:px-10 text-center">
-        <h2 className="text-4xl font-extrabold text-[var(--color-primary)] font-headline">
-          The Four Pillars
-        </h2>
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <h2 className="text-4xl font-extrabold text-[var(--color-primary)] font-headline">
+            The Four Pillars
+          </h2>
+          <StatusBadge status="draft" />
+        </div>
         <p className="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto mt-4 mb-20 leading-relaxed">
           Our social innovation ecosystem operates on the specialized contributions and synergy of
           our key stakeholders.
         </p>
 
-        {/* Pillars Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {PILLARS_DATA.map((pillar, idx) => {
             const colors = getPillarColorTheme(pillar.color);
@@ -112,6 +173,9 @@ export default function Pillars() {
                 </p>
 
                 <button
+                  ref={(el) => {
+                    if (el) triggerButtonRefs.current.set(pillar.id, el);
+                  }}
                   onClick={(e) => handleLearnMore(pillar, e)}
                   className={`text-sm font-bold flex items-center gap-1 hover:underline transition-all ${colors.text}`}
                 >
@@ -124,23 +188,32 @@ export default function Pillars() {
         </div>
       </div>
 
-      {/* Detail Showcase Modal */}
       <AnimatePresence>
         {selectedPillar && (
-          <div
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Pillar details"
+            role="presentation"
+            onClick={closeModal}
           >
             <motion.div
+              ref={modalRef}
+              key="modal-card"
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="pillar-modal-title"
+              onClick={(e) => e.stopPropagation()}
               className="bg-white rounded-3xl p-6 sm:p-10 max-w-lg w-full shadow-2xl relative border border-slate-100"
             >
               <button
-                onClick={() => setSelectedPillar(null)}
+                ref={closeButtonRef}
+                onClick={() => closeModal()}
                 className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all"
                 aria-label="Close"
               >
@@ -155,7 +228,10 @@ export default function Pillars() {
                     {getIcon(selectedPillar.iconName)}
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-[var(--color-text)] font-headline">
+                    <h3
+                      id="pillar-modal-title"
+                      className="text-2xl font-bold text-[var(--color-text)] font-headline"
+                    >
                       {selectedPillar.title}
                     </h3>
                     <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
@@ -273,27 +349,27 @@ export default function Pillars() {
                       onClick={() => handleActionClick("volunteer-section")}
                       className="w-full py-3.5 bg-[var(--color-secondary)] text-white rounded-xl font-bold text-sm hover:opacity-95 shadow-md flex items-center justify-center gap-1.5"
                     >
-                      <span>Join Volunteer Registry</span>
+                      <span>View participation status</span>
                     </button>
                   ) : selectedPillar.id === "trainers" ? (
                     <button
                       onClick={() => handleActionClick("experts-section")}
                       className="w-full py-3.5 bg-[var(--color-accent)] text-white rounded-xl font-bold text-sm hover:opacity-95 shadow-md flex items-center justify-center gap-1.5"
                     >
-                      <span>Connect with Trainers</span>
+                      <span>Learn about proposed involvement</span>
                     </button>
                   ) : (
                     <button
                       onClick={() => handleActionClick("connect-section")}
                       className="w-full py-3.5 bg-[var(--color-primary)] text-white rounded-xl font-bold text-sm hover:opacity-95 shadow-md flex items-center justify-center gap-1.5"
                     >
-                      <span>Send Partnership Inquiry</span>
+                      <span>View contact availability</span>
                     </button>
                   )}
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </section>

@@ -17,7 +17,7 @@ export default function App() {
   usePageMetadata();
 
   return (
-    <div className="min-h-screen bg-[#f7f9fb] text-slate-800 selection:bg-[#0072CE]/20 selection:text-[#0072CE] font-sans antialiased">
+    <div className="min-h-screen bg-[#f7f9fb] text-slate-800 selection:bg-[#0072CE]/20 selection:text-[#0072CE] font-sans antialiased overflow-x-hidden">
       <SkipLink />
       <Header />
       <main id="main-content" tabIndex={-1}>

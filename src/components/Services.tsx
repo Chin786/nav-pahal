@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { GraduationCap, BookOpen, Coins, Megaphone } from "lucide-react";
 import { SERVICES_DATA } from "../data";
+import { StatusBadge, Notice } from "./ui";
 
 export default function Services() {
   const getServiceIcon = (id: string) => {
@@ -40,7 +41,12 @@ export default function Services() {
     >
       <div className="mx-auto w-full max-w-[var(--content-max-width)] px-6 md:px-10">
         <div className="mb-16">
-          <h2 className="text-4xl font-extrabold font-headline mb-4">Core Programs</h2>
+          <StatusBadge status="draft" />
+          <h2 className="text-4xl font-extrabold font-headline mb-4">Proposed Program Areas</h2>
+          <Notice variant="info">
+            All program areas listed here are proposed and under development. No active programs
+            currently exist.
+          </Notice>
           <p className="text-white/75 text-sm sm:text-base max-w-xl leading-relaxed">
             Community-focused programs designed to build awareness, develop skills, and create
             sustainable impact through collaborative partnerships.

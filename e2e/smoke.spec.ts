@@ -100,11 +100,11 @@ test("does not display hero image from external source", async ({ page }) => {
   expect(imgs).toBe(0);
 });
 
-test("skip link becomes visible on keyboard focus", async ({ page }) => {
+test("skip link becomes visible on keyboard tab", async ({ page }) => {
   await page.goto("/");
   const skipLink = page.getByRole("link", { name: "Skip to main content" });
   await expect(skipLink).toBeVisible();
-  await skipLink.focus();
+  await page.keyboard.press("Tab");
   await expect(skipLink).toBeVisible();
 });
 
@@ -157,17 +157,40 @@ test("escape closes the mobile menu", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
 });
 
+test("close button receives focus when mobile menu opens", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Open menu" }).click();
+
+  const closeButton = page.getByRole("button", { name: "Close menu" });
+  await expect(closeButton).toBeVisible();
+  await expect(closeButton).toBeFocused();
+});
+
 test("404 page has link to programs", async ({ page }) => {
   await page.goto("/unknown-page");
   await expect(page.getByRole("link", { name: "View Programs" })).toBeVisible();
 });
 
-test("no horizontal overflow at 320px width", async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 600 });
-  await page.goto("/");
-  const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
-  const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
-  expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 30);
+test("no horizontal overflow at 320px width on all routes", async ({ page }) => {
+  const routes = [
+    "/",
+    "/about",
+    "/programs",
+    "/training",
+    "/get-involved",
+    "/impact",
+    "/resources",
+    "/contact",
+    "/unknown-page",
+  ];
+  for (const route of routes) {
+    await page.setViewportSize({ width: 320, height: 600 });
+    await page.goto(route);
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+  }
 });
 
 test("direct loading of all eight routes", async ({ page }) => {

@@ -1,33 +1,6 @@
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 
-interface PageHeroProps {
-  title: string;
-  subtitle?: string;
-  className?: string;
-  children?: ReactNode;
-}
-
-export default function PageHero({ title, subtitle, className = "", children }: PageHeroProps) {
-  return (
-    <section
-      className={`bg-gradient-to-b from-[var(--color-primary)]/5 to-transparent pt-32 pb-16 ${className}`}
-    >
-      <div className="mx-auto w-full max-w-[var(--content-max-width)] px-6 md:px-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[var(--color-primary)] font-headline">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-4 text-lg text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
-            {subtitle}
-          </p>
-        )}
-        {children}
-      </div>
-    </section>
-  );
-}
-
 interface SectionHeadingProps {
   title: string;
   subtitle?: string;

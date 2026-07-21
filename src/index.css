@@ -24,6 +24,14 @@
   --radius-5xl: 3.5rem;
 }
 
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 :root {
   /* Brand colours */
   --color-primary: #0072ce;

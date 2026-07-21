@@ -13,7 +13,7 @@ This repository contains the **frontend MVP** of the Navpahal platform. It is a 
 Sprint 1 establishes a consistent, accessible, and maintainable public NGO website foundation:
 
 - **Design tokens**: CSS custom properties for brand colours, spacing, typography, shadows, and focus rings
-- **Reusable UI components**: Container, PageHero, SectionHeading, ButtonLink, Notice, StatusBadge, PlaceholderPanel
+- **Reusable UI components**: Container, SectionHeading, ButtonLink, Notice, StatusBadge, PlaceholderPanel
 - **Site navigation**: `aria-current="page"` on active links, keyboard-operable mobile menu, Escape to close, focus management
 - **Skip navigation**: "Skip to main content" link visible on keyboard focus
 - **Landmarks**: Unique `<main>` landmark, accessible `<footer>`, page-level `<h1>` on every route
@@ -52,6 +52,8 @@ See [docs/content-governance.md](docs/content-governance.md) for the full govern
 - Page-level h1 on every route
 - Active navigation links use `aria-current="page"`
 - Mobile menu: keyboard-operable, Escape to close, focus returns to trigger
+- Foundation accordion: semantic `<button>` elements with `aria-expanded` and `aria-controls`
+- Pillar detail modal: Escape closes, focus trap, backdrop click closes, focus returns to trigger
 - All decorative icons use `aria-hidden="true"`
 - Icon-only controls have accessible names
 - Disabled forms are clearly explained
