@@ -97,6 +97,8 @@ The app runs at `http://localhost:3000`.
 | `npm run test:watch` | Run tests in watch mode |
 | `npm run test:coverage` | Run tests with coverage report |
 | `npm run test:e2e` | Run Playwright e2e tests against production build |
+| `npm run check` | Run all checks: format, lint, typecheck, unit tests, build |
+| `npm run check-all` | Run all checks including e2e tests |
 
 ## Current Routes
 
