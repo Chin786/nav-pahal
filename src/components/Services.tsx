@@ -43,7 +43,7 @@ export default function Services() {
         <div className="mb-16">
           <StatusBadge status="draft" />
           <h2 className="text-4xl font-extrabold font-headline mb-4">Proposed Program Areas</h2>
-          <Notice variant="info">
+          <Notice variant="info" className="!bg-white !text-slate-800 !border-slate-200">
             All program areas listed here are proposed and under development. No active programs
             currently exist.
           </Notice>

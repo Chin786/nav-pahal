@@ -5,7 +5,11 @@ import { EXPERTS_STATUS } from "../content/siteContent";
 
 export default function Experts() {
   return (
-    <section id="experts-section" className="py-24 bg-[var(--color-bg)] scroll-mt-20 leading-tight">
+    <section
+      id="experts-section"
+      tabIndex={-1}
+      className="py-24 bg-[var(--color-bg)] scroll-mt-20 leading-tight"
+    >
       <div className="mx-auto w-full max-w-[var(--content-max-width)] px-6 md:px-10">
         <div className="mb-16">
           <h2 className="text-4xl font-extrabold text-[var(--color-primary)] font-headline">

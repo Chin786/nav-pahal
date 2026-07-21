@@ -311,6 +311,51 @@ describe("Foundation accordion accessibility", () => {
   });
 });
 
+describe("Pillar modal accessibility", () => {
+  it("renders pillar section with future-oriented heading", () => {
+    renderApp();
+    expect(
+      screen.getByText(
+        /The proposed Navpahal ecosystem would bring together four stakeholder groups/i,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("renders Learn More buttons for each pillar", () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    expect(learnMoreButtons.length).toBe(4);
+  });
+
+  it("opens modal with dialog role and close button on click", async () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    learnMoreButtons[0].click();
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+    });
+  });
+
+  it("displays Proposed Roles heading inside modal", async () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    learnMoreButtons[0].click();
+    await waitFor(() => {
+      expect(screen.getByText("Proposed Roles and Opportunities")).toBeInTheDocument();
+    });
+  });
+
+  it("uses future-oriented language in modal list items", async () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    learnMoreButtons[0].click();
+    await waitFor(() => {
+      expect(screen.getByText(/A future citizen pathway may allow/i)).toBeInTheDocument();
+    });
+  });
+});
+
 describe("Draft and verification labels", () => {
   it("displays awaiting-verification badges on about page", () => {
     renderApp("/about");

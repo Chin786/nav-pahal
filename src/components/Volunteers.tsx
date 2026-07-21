@@ -4,7 +4,11 @@ import { FORM_DISCLOSURE } from "../content/siteContent";
 
 export default function Volunteers() {
   return (
-    <section id="volunteer-section" className="py-24 bg-white scroll-mt-20 leading-tight">
+    <section
+      id="volunteer-section"
+      tabIndex={-1}
+      className="py-24 bg-white scroll-mt-20 leading-tight"
+    >
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="bg-gradient-to-br from-[var(--color-primary)] via-[#00B5E2] to-[var(--color-primary)] rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden relative p-8 md:p-16 lg:p-20 text-white shadow-2xl">
           <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />

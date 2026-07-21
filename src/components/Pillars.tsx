@@ -64,25 +64,43 @@ export default function Pillars() {
     }
   };
 
+  const [closingAction, setClosingAction] = React.useState<string | null>(null);
+
   const handleLearnMore = (pillar: Pillar, e: React.MouseEvent) => {
     e.preventDefault();
+    setClosingAction(null);
     setSelectedPillar(pillar);
   };
 
-  const handleActionClick = (targetId: string) => {
+  const dismissModal = React.useCallback(() => {
+    const pillarId = selectedPillar?.id;
     setSelectedPillar(null);
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (pillarId) {
+      const trigger = triggerButtonRefs.current.get(pillarId);
+      setTimeout(() => trigger?.focus(), 0);
     }
+  }, [selectedPillar]);
+
+  const handleActionClick = (targetId: string) => {
+    setClosingAction(targetId);
+    setSelectedPillar(null);
   };
 
-  const closeModal = React.useCallback(() => {
-    setSelectedPillar(null);
-  }, []);
-
   React.useEffect(() => {
-    if (!selectedPillar) return;
+    if (!selectedPillar) {
+      if (closingAction) {
+        const timer = setTimeout(() => {
+          const element = document.getElementById(closingAction);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+            element.focus({ preventScroll: true });
+          }
+          setClosingAction(null);
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+      return;
+    }
 
     document.body.style.overflow = "hidden";
 
@@ -92,7 +110,7 @@ export default function Pillars() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        closeModal();
+        dismissModal();
         return;
       }
 
@@ -119,18 +137,12 @@ export default function Pillars() {
 
     document.addEventListener("keydown", handleKeyDown);
 
-    const refs = triggerButtonRefs.current;
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
       clearTimeout(timer);
-      const pillarId = selectedPillar?.id;
-      if (pillarId) {
-        const trigger = refs.get(pillarId);
-        trigger?.focus();
-      }
     };
-  }, [selectedPillar, closeModal]);
+  }, [selectedPillar, dismissModal, closingAction]);
 
   return (
     <section id="pillars-section" className="py-24 bg-white scroll-mt-20 leading-tight">
@@ -142,8 +154,8 @@ export default function Pillars() {
           <StatusBadge status="draft" />
         </div>
         <p className="text-sm sm:text-base text-[var(--color-text-muted)] max-w-2xl mx-auto mt-4 mb-20 leading-relaxed">
-          Our social innovation ecosystem operates on the specialized contributions and synergy of
-          our key stakeholders.
+          The proposed Navpahal ecosystem would bring together four stakeholder groups. Its
+          structure and operating model remain under development.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -197,7 +209,7 @@ export default function Pillars() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
             role="presentation"
-            onClick={closeModal}
+            onClick={dismissModal}
           >
             <motion.div
               ref={modalRef}
@@ -213,7 +225,7 @@ export default function Pillars() {
             >
               <button
                 ref={closeButtonRef}
-                onClick={() => closeModal()}
+                onClick={dismissModal}
                 className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all"
                 aria-label="Close"
               >
@@ -248,7 +260,7 @@ export default function Pillars() {
 
                 <div className="space-y-3">
                   <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-widest">
-                    Key Roles &amp; Benefits
+                    Proposed Roles and Opportunities
                   </h4>
                   <ul className="grid grid-cols-1 gap-2.5">
                     {selectedPillar.id === "citizens" && (
@@ -259,7 +271,8 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Submit community needs and feedback through structured channels.
+                            A future citizen pathway may allow structured needs and feedback
+                            submissions.
                           </span>
                         </li>
                         <li className="flex items-start gap-2.5 text-xs text-slate-600">
@@ -268,7 +281,7 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Access transparent information about available programs and resources.
+                            Transparent program and resource information would be made available.
                           </span>
                         </li>
                       </>
@@ -281,7 +294,8 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Build leadership skills through structured training and workshops.
+                            Proposed volunteer activities may include awareness programs after
+                            approval.
                           </span>
                         </li>
                         <li className="flex items-start gap-2.5 text-xs text-slate-600">
@@ -290,8 +304,8 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Participate in community awareness campaigns and digital teaching
-                            projects.
+                            Leadership and workshop facilitation skills could be developed through
+                            future training.
                           </span>
                         </li>
                       </>
@@ -304,7 +318,7 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Flexible scheduling for training sessions and mentoring activities.
+                            Future trainers may contribute to reviewed learning materials.
                           </span>
                         </li>
                         <li className="flex items-start gap-2.5 text-xs text-slate-600">
@@ -313,7 +327,8 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Contribute to community capacity-building guides and training materials.
+                            Scheduling and mentoring frameworks would be developed once the network
+                            is established.
                           </span>
                         </li>
                       </>
@@ -326,7 +341,7 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Collaborate on transparent program tracking and impact reporting.
+                            Potential partners may collaborate on approved program evaluation.
                           </span>
                         </li>
                         <li className="flex items-start gap-2.5 text-xs text-slate-600">
@@ -335,7 +350,8 @@ export default function Pillars() {
                             aria-hidden="true"
                           />
                           <span>
-                            Form strategic alliances with research institutions and universities.
+                            Strategic alliances with research institutions and universities could be
+                            explored.
                           </span>
                         </li>
                       </>

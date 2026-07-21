@@ -6,6 +6,7 @@ export default function Contact() {
   return (
     <section
       id="connect-section"
+      tabIndex={-1}
       className="py-24 bg-[var(--color-bg)]/60 border-t border-slate-100 scroll-mt-20 leading-tight"
     >
       <div className="mx-auto w-full max-w-[var(--content-max-width)] px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">

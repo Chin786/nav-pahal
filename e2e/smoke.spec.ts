@@ -100,12 +100,16 @@ test("does not display hero image from external source", async ({ page }) => {
   expect(imgs).toBe(0);
 });
 
-test("skip link becomes visible on keyboard tab", async ({ page }) => {
+test("skip link keyboard flow: Tab to focus, Enter to jump to main", async ({ page }) => {
   await page.goto("/");
   const skipLink = page.getByRole("link", { name: "Skip to main content" });
   await expect(skipLink).toBeVisible();
   await page.keyboard.press("Tab");
-  await expect(skipLink).toBeVisible();
+  await expect(skipLink).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#main-content/);
+  const activeId = await page.evaluate(() => document.activeElement?.id);
+  expect(activeId).toBe("main-content");
 });
 
 test("desktop navigation has aria-current on active link", async ({ page }, testInfo) => {
@@ -146,15 +150,18 @@ test("navigates through mobile menu to routes", async ({ page }) => {
   }
 });
 
-test("escape closes the mobile menu", async ({ page }) => {
+test("escape closes the mobile menu and returns focus to open button", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/");
 
-  await page.getByRole("button", { name: "Open menu" }).click();
-  await expect(page.getByRole("button", { name: "Close menu" })).toBeVisible();
+  const openButton = page.getByRole("button", { name: "Open menu" });
+  await openButton.click();
+  const closeButton = page.getByRole("button", { name: "Close menu" });
+  await expect(closeButton).toBeVisible();
 
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
+  await expect(closeButton).not.toBeVisible();
+  await expect(openButton).toBeFocused();
 });
 
 test("close button receives focus when mobile menu opens", async ({ page }) => {
@@ -165,6 +172,24 @@ test("close button receives focus when mobile menu opens", async ({ page }) => {
   const closeButton = page.getByRole("button", { name: "Close menu" });
   await expect(closeButton).toBeVisible();
   await expect(closeButton).toBeFocused();
+});
+
+test("pillar modal opens and closes with keyboard, focus returns to trigger", async ({ page }) => {
+  await page.goto("/");
+  const learnMoreButtons = page.getByRole("button", { name: "Learn More" });
+  const firstLearnMore = learnMoreButtons.first();
+  await firstLearnMore.focus();
+
+  await page.keyboard.press("Enter");
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+
+  const closeButton = page.getByRole("button", { name: "Close" });
+  await expect(closeButton).toBeFocused();
+
+  await page.keyboard.press("Escape");
+  await expect(dialog).not.toBeVisible();
+  await expect(firstLearnMore).toBeFocused();
 });
 
 test("404 page has link to programs", async ({ page }) => {
