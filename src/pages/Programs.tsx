@@ -1,79 +1,49 @@
-import { Link } from "react-router-dom";
+import { SectionHeading, Container, StatusBadge, Notice, PlaceholderPanel } from "../components/ui";
+import { PROGRAM_CATEGORIES } from "../content/siteContent";
 
 export default function Programs() {
+  const programs = PROGRAM_CATEGORIES.value;
+
   return (
-    <section className="pt-32 pb-24 bg-[#f7f9fb] min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 md:px-10 space-y-12">
-        <div className="space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0072CE] font-headline">
-            Programs
-          </h1>
-          <div className="w-16 h-1 bg-[#72BF44]" />
-        </div>
+    <section className="pt-32 pb-24 bg-[var(--color-bg)] min-h-screen">
+      <Container>
+        <SectionHeading
+          title="Programs"
+          subtitle="Proposed program areas for community development"
+          level={1}
+        />
 
-        <div className="space-y-6 text-[#44474e] text-base leading-relaxed">
-          <p>
-            <span className="font-bold text-[#0072CE]">DRAFT</span> &mdash; This page is a
-            placeholder. Our programs focus on building community capacity through structured
-            training, awareness campaigns, and collaborative partnerships.
-          </p>
+        <div className="space-y-8 max-w-3xl">
+          <StatusBadge status="draft" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <h3 className="text-lg font-bold text-[#0072CE] font-headline mb-2">
-                Community Training
-              </h3>
-              <p className="text-sm text-slate-600">
-                Structured workshops building skills for community leaders and field volunteers.
-              </p>
-              <span className="inline-block mt-3 text-[10px] font-bold text-[#F7941D] uppercase tracking-wider">
-                Coming Soon
-              </span>
-            </div>
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <h3 className="text-lg font-bold text-[#0072CE] font-headline mb-2">
-                Knowledge Center
-              </h3>
-              <p className="text-sm text-slate-600">
-                Curated social impact research, policies, and development resources.
-              </p>
-              <span className="inline-block mt-3 text-[10px] font-bold text-[#F7941D] uppercase tracking-wider">
-                Coming Soon
-              </span>
-            </div>
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <h3 className="text-lg font-bold text-[#0072CE] font-headline mb-2">
-                CSR Collaboration
-              </h3>
-              <p className="text-sm text-slate-600">
-                Connecting initiatives with corporate sustainability and social responsibility
-                programs.
-              </p>
-              <span className="inline-block mt-3 text-[10px] font-bold text-[#F7941D] uppercase tracking-wider">
-                Coming Soon
-              </span>
-            </div>
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <h3 className="text-lg font-bold text-[#0072CE] font-headline mb-2">
-                Awareness Campaigns
-              </h3>
-              <p className="text-sm text-slate-600">
-                Community-focused awareness drives for health, safety, and environmental
-                initiatives.
-              </p>
-              <span className="inline-block mt-3 text-[10px] font-bold text-[#F7941D] uppercase tracking-wider">
-                Coming Soon
-              </span>
-            </div>
+          <Notice variant="info">
+            Program details below are proposed and await organizational approval. No programs are
+            currently active.
+          </Notice>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {programs.map((program) => (
+              <div
+                key={program.id}
+                className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h2 className="text-lg font-bold text-[var(--color-primary)] font-headline">
+                    {program.title}
+                  </h2>
+                  <StatusBadge status={program.status} />
+                </div>
+                <p className="text-sm text-slate-600 leading-relaxed">{program.description}</p>
+              </div>
+            ))}
           </div>
-        </div>
 
-        <div>
-          <Link to="/" className="text-sm font-bold text-[#0072CE] hover:underline">
-            &larr; Back to Home
-          </Link>
+          <PlaceholderPanel
+            title="Program Implementation Timeline"
+            description="Details about program schedules, locations, and participation criteria will be added once programs are approved."
+          />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

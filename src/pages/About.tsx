@@ -1,48 +1,81 @@
-import { Link } from "react-router-dom";
+import { SectionHeading, Container, StatusBadge, Notice } from "../components/ui";
+import { BRAND } from "../content/siteContent";
 
 export default function About() {
   return (
-    <section className="pt-32 pb-24 bg-[#f7f9fb] min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 md:px-10 space-y-12">
-        <div className="space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0072CE] font-headline">
-            About Navpahal
-          </h1>
-          <div className="w-16 h-1 bg-[#F7941D]" />
-        </div>
+    <section className="pt-32 pb-24 bg-[var(--color-bg)] min-h-screen">
+      <Container>
+        <SectionHeading
+          title="About Navpahal"
+          subtitle="Our mission, vision, and operating principles"
+          level={1}
+        />
 
-        <div className="space-y-6 text-[#44474e] text-base leading-relaxed">
-          <p>
-            <span className="font-bold text-[#0072CE]">DRAFT</span> &mdash; This page is a
-            placeholder. Navpahal is a community empowerment platform dedicated to bridging the gap
-            between institutional resources and grassroots needs.
-          </p>
-          <p>
-            Our mission is to create a resilient ecosystem for sustainable community development
-            through awareness, preparedness, and training. We believe that every community deserves
-            access to the tools, knowledge, and partnerships needed to drive their own evolution.
-          </p>
-          <p>
-            Navpahal provides awareness, preparedness and community training. It does not replace
-            doctors, hospitals, police, fire services, ambulances or professional emergency
-            responders.
-          </p>
-        </div>
+        <div className="space-y-8 max-w-3xl">
+          <StatusBadge status="awaiting-verification" />
 
-        <div className="pt-8 border-t border-slate-100">
-          <p className="text-sm text-slate-500 italic">
-            <span className="font-bold text-[#0072CE]">DRAFT</span> &mdash; Additional content
-            including team bios, organizational history, and governance details will be added here
-            in a future iteration.
-          </p>
-        </div>
+          <div className="space-y-6 text-[var(--color-text-muted)] text-base leading-relaxed">
+            <p>
+              <strong>Mission:</strong> {BRAND.missionStatement}
+            </p>
 
-        <div>
-          <Link to="/" className="text-sm font-bold text-[#0072CE] hover:underline">
-            &larr; Back to Home
-          </Link>
+            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+              <h2 className="text-lg font-bold text-[var(--color-primary)] font-headline mb-3">
+                Vision
+              </h2>
+              <p>
+                To build a world where every community has the tools, network, and expertise to
+                drive their own sustainable development — <StatusBadge status="draft" />{" "}
+                <span className="text-sm text-slate-400 italic">
+                  (awaiting organizational approval)
+                </span>
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+              <h2 className="text-lg font-bold text-[var(--color-primary)] font-headline mb-3">
+                Operating Principles
+              </h2>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-[var(--color-secondary)] font-bold">01.</span>
+                  <span>
+                    <strong>Community-led:</strong> Initiatives are designed with and for the
+                    communities they serve.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[var(--color-secondary)] font-bold">02.</span>
+                  <span>
+                    <strong>Transparency:</strong> All programs, metrics, and partnerships are
+                    documented and verifiable.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[var(--color-secondary)] font-bold">03.</span>
+                  <span>
+                    <strong>Collaboration:</strong> We work across sectors to amplify impact through
+                    strategic partnerships.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[var(--color-secondary)] font-bold">04.</span>
+                  <span>
+                    <strong>Evidence-based:</strong> Decisions and claims are grounded in verifiable
+                    data.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <Notice variant="info">
+            This page contains draft content awaiting organizational review and approval.
+            Organizational details including governance, team, and history will be published once
+            verified.
+          </Notice>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

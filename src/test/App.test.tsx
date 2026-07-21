@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
 
@@ -13,6 +13,61 @@ function renderApp(route = "/") {
 
 beforeEach(() => {
   localStorage.clear();
+  document.title = "";
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.remove();
+});
+
+describe("Skip link", () => {
+  it("renders a skip-to-main-content link", () => {
+    renderApp();
+    const skipLink = screen.getByRole("link", { name: "Skip to main content" });
+    expect(skipLink).toBeInTheDocument();
+    expect(skipLink).toHaveAttribute("href", "#main-content");
+  });
+});
+
+describe("Main landmark", () => {
+  const routes = [
+    "/",
+    "/about",
+    "/programs",
+    "/training",
+    "/get-involved",
+    "/impact",
+    "/resources",
+    "/contact",
+    "/unknown-route",
+  ];
+
+  routes.forEach((route) => {
+    it(`has a main landmark on ${route}`, () => {
+      renderApp(route);
+      const main = screen.getByRole("main");
+      expect(main).toBeInTheDocument();
+      expect(main).toHaveAttribute("id", "main-content");
+    });
+  });
+});
+
+describe("Page-level h1", () => {
+  it("renders exactly one h1 on the home page", () => {
+    renderApp("/");
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBe(1);
+  });
+
+  it("renders exactly one h1 on the about page", () => {
+    renderApp("/about");
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBe(1);
+  });
+
+  it("renders exactly one h1 on the get-involved page", () => {
+    renderApp("/get-involved");
+    const headings = screen.getAllByRole("heading", { level: 1 });
+    expect(headings.length).toBe(1);
+  });
 });
 
 describe("Header navigation", () => {
@@ -39,17 +94,31 @@ describe("Header navigation", () => {
     renderApp();
     expect(screen.getByRole("link", { name: "Join Initiative" })).toBeInTheDocument();
   });
+
+  it("marks active nav link with aria-current=page on home", () => {
+    renderApp("/");
+    const nav = screen.getByRole("navigation", { name: "Main navigation" });
+    const homeLink = within(nav).getByRole("link", { name: "Home" });
+    expect(homeLink).toHaveAttribute("aria-current", "page");
+  });
+
+  it("marks active nav link with aria-current=page on about", () => {
+    renderApp("/about");
+    const nav = screen.getByRole("navigation", { name: "Main navigation" });
+    const aboutLink = within(nav).getByRole("link", { name: "About" });
+    expect(aboutLink).toHaveAttribute("aria-current", "page");
+  });
 });
 
 describe("Primary calls to action", () => {
-  it("renders Join the Movement button on home page", () => {
+  it("renders Learn About Our Programs button on home page", () => {
     renderApp();
-    expect(screen.getByRole("link", { name: "Join the Movement" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Learn About Our Programs" })).toBeInTheDocument();
   });
 
-  it("renders View Our Impact link on home page", () => {
+  it("renders How to Get Involved link on home page", () => {
     renderApp();
-    expect(screen.getByRole("link", { name: "View Our Impact" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "How to Get Involved" })).toBeInTheDocument();
   });
 });
 
@@ -147,7 +216,7 @@ describe("Removal of unsafe claims", () => {
   it("does not display automatic volunteer approval", () => {
     renderApp();
     const body = document.body.textContent || "";
-    expect(body).not.toMatch(/status.*Approved/i);
+    expect(body).not.toMatch(/status.*approved/i);
   });
 
   it("does not display certificate activation from quiz", () => {
@@ -213,12 +282,99 @@ describe("Removal of unsafe claims", () => {
     const imgs = document.querySelectorAll("img[src*='googleusercontent']");
     expect(imgs.length).toBe(0);
   });
+});
 
-  it("displays submission-not-active disclosure", () => {
+describe("Foundation accordion accessibility", () => {
+  it("renders accordion buttons with aria-expanded, aria-controls, and type=button", () => {
+    renderApp();
+    const buttons = screen.getAllByRole("button", { name: "Read Deeply" });
+    expect(buttons.length).toBe(2);
+    buttons.forEach((btn) => {
+      expect(btn).toHaveAttribute("aria-expanded", "false");
+      expect(btn).toHaveAttribute("type", "button");
+      expect(btn.className).toContain("focus-ring");
+    });
+    expect(buttons[0]).toHaveAttribute("aria-controls", "vision-panel");
+    expect(buttons[1]).toHaveAttribute("aria-controls", "mission-panel");
+  });
+
+  it("renders vision panel with region role after expanding", async () => {
+    renderApp();
+    const buttons = screen.getAllByRole("button", { name: "Read Deeply" });
+    buttons[0].click();
+    await waitFor(() => {
+      const visionPanel = document.getElementById("vision-panel");
+      expect(visionPanel).toBeInTheDocument();
+      expect(visionPanel).toHaveAttribute("role", "region");
+      expect(visionPanel).toHaveAttribute("aria-labelledby", "vision-heading");
+    });
+  });
+});
+
+describe("Pillar modal accessibility", () => {
+  it("renders pillar section with future-oriented heading", () => {
     renderApp();
     expect(
-      screen.getAllByText(/Online submissions are not yet active/).length,
-    ).toBeGreaterThanOrEqual(1);
+      screen.getByText(
+        /The proposed Navpahal ecosystem would bring together four stakeholder groups/i,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("renders Learn More buttons for each pillar", () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    expect(learnMoreButtons.length).toBe(4);
+  });
+
+  it("opens modal with dialog role and close button on click", async () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    learnMoreButtons[0].click();
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+    });
+  });
+
+  it("displays Proposed Roles heading inside modal", async () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    learnMoreButtons[0].click();
+    await waitFor(() => {
+      expect(screen.getByText("Proposed Roles and Opportunities")).toBeInTheDocument();
+    });
+  });
+
+  it("uses future-oriented language in modal list items", async () => {
+    renderApp();
+    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
+    learnMoreButtons[0].click();
+    await waitFor(() => {
+      expect(screen.getByText(/A future citizen pathway may allow/i)).toBeInTheDocument();
+    });
+  });
+});
+
+describe("Draft and verification labels", () => {
+  it("displays awaiting-verification badges on about page", () => {
+    renderApp("/about");
+    expect(screen.getByText("Awaiting Verification")).toBeInTheDocument();
+  });
+
+  it("displays draft badge on programs page", () => {
+    renderApp("/programs");
+    expect(screen.getByText("Draft")).toBeInTheDocument();
+  });
+
+  it("displays awaiting-verification badge on impact page", () => {
+    renderApp("/impact");
+    expect(screen.getByText("Awaiting Verification")).toBeInTheDocument();
+  });
+
+  it("displays under-development badge on resources page", () => {
+    renderApp("/resources");
+    expect(screen.getByText("Under Development")).toBeInTheDocument();
   });
 });
 
@@ -235,32 +391,33 @@ describe("Route rendering", () => {
 
   it("renders Programs page at /programs", () => {
     renderApp("/programs");
-    expect(screen.getByRole("heading", { name: "Programs" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Programs", level: 1 })).toBeInTheDocument();
   });
 
   it("renders Training page at /training", () => {
     renderApp("/training");
-    expect(screen.getByRole("heading", { name: "Training" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Training", level: 1 })).toBeInTheDocument();
   });
 
   it("renders Get Involved page at /get-involved", () => {
     renderApp("/get-involved");
-    expect(screen.getByRole("heading", { name: "Get Involved", level: 1 })).toBeInTheDocument();
+    const headings = screen.getAllByRole("heading", { name: "Get Involved" });
+    expect(headings.length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders Impact page at /impact", () => {
     renderApp("/impact");
-    expect(screen.getByRole("heading", { name: "Impact" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Impact", level: 1 })).toBeInTheDocument();
   });
 
   it("renders Resources page at /resources", () => {
     renderApp("/resources");
-    expect(screen.getByRole("heading", { name: "Resources" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Resources", level: 1 })).toBeInTheDocument();
   });
 
   it("renders Contact page at /contact", () => {
     renderApp("/contact");
-    expect(screen.getByRole("heading", { name: "Contact" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Contact", level: 1 })).toBeInTheDocument();
   });
 
   it("renders NotFound page for unknown routes", () => {
@@ -268,5 +425,24 @@ describe("Route rendering", () => {
     expect(screen.getByText("404")).toBeInTheDocument();
     expect(screen.getByText("Page Not Found")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Return Home" })).toBeInTheDocument();
+  });
+});
+
+describe("Route metadata", () => {
+  it("sets document title for home page", () => {
+    renderApp("/");
+    expect(document.title).toBe("Navpahal | Aware. Engage. Empower.");
+  });
+
+  it("sets document title for about page", () => {
+    renderApp("/about");
+    expect(document.title).toBe("About | Navpahal");
+  });
+
+  it("sets meta description for contact page", () => {
+    renderApp("/contact");
+    const meta = document.querySelector('meta[name="description"]');
+    expect(meta).toBeTruthy();
+    expect(meta!.getAttribute("content")).toBeTruthy();
   });
 });

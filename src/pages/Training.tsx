@@ -1,39 +1,49 @@
-import { Link } from "react-router-dom";
+import { SectionHeading, Container, StatusBadge, Notice, PlaceholderPanel } from "../components/ui";
+import { TRAINING_AREAS } from "../content/siteContent";
 
 export default function Training() {
+  const areas = TRAINING_AREAS.value;
+
   return (
-    <section className="pt-32 pb-24 bg-[#f7f9fb] min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 md:px-10 space-y-12">
-        <div className="space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0072CE] font-headline">
-            Training
-          </h1>
-          <div className="w-16 h-1 bg-[#F7941D]" />
-        </div>
+    <section className="pt-32 pb-24 bg-[var(--color-bg)] min-h-screen">
+      <Container>
+        <SectionHeading
+          title="Training"
+          subtitle="Planned learning areas for community capacity building"
+          level={1}
+        />
 
-        <div className="space-y-6 text-[#44474e] text-base leading-relaxed">
-          <p>
-            <span className="font-bold text-[#0072CE]">DRAFT</span> &mdash; This page is a
-            placeholder. Our training programs are designed to build community capacity through
-            structured workshops, mentorship programs, and skills development initiatives.
-          </p>
-          <p>
-            Trainers and mentors provide guidance, share knowledge, and help build the skills needed
-            for effective community development. Training covers topics such as community
-            organizing, project management, digital literacy, and social impact measurement.
-          </p>
-          <p className="text-sm text-slate-500 italic">
-            Detailed training curricula, schedules, and enrollment information will be added in
-            future iterations.
-          </p>
-        </div>
+        <div className="space-y-8 max-w-3xl">
+          <StatusBadge status="draft" />
 
-        <div>
-          <Link to="/" className="text-sm font-bold text-[#0072CE] hover:underline">
-            &larr; Back to Home
-          </Link>
+          <Notice variant="info">
+            Training curricula, schedules, and enrollment information are under development. No
+            certification or accreditation is currently offered.
+          </Notice>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {areas.map((area) => (
+              <div
+                key={area.id}
+                className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <h2 className="text-lg font-bold text-[var(--color-primary)] font-headline">
+                    {area.title}
+                  </h2>
+                  <StatusBadge status={area.status} />
+                </div>
+                <p className="text-sm text-slate-600 leading-relaxed">{area.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <PlaceholderPanel
+            title="Training Schedule Coming Soon"
+            description="Dates, registration process, and detailed curricula will be published as training programs are developed."
+          />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

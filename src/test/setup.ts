@@ -24,6 +24,12 @@ Object.defineProperty(window, "IntersectionObserver", {
   value: MockIntersectionObserver,
 });
 
+// Stub scrollTo for jsdom (used by motion keyframe measurement)
+window.scrollTo = () => {};
+
+// Stub scrollIntoView for jsdom
+Element.prototype.scrollIntoView = () => {};
+
 // Also stub matchMedia for motion
 Object.defineProperty(window, "matchMedia", {
   writable: true,

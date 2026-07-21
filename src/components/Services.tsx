@@ -1,31 +1,34 @@
 import { motion } from "motion/react";
 import { GraduationCap, BookOpen, Coins, Megaphone } from "lucide-react";
 import { SERVICES_DATA } from "../data";
+import { StatusBadge, Notice } from "./ui";
 
 export default function Services() {
   const getServiceIcon = (id: string) => {
     switch (id) {
       case "training":
-        return <GraduationCap className="w-8 h-8 text-[#72BF44]" />;
+        return (
+          <GraduationCap className="w-8 h-8 text-[var(--color-secondary)]" aria-hidden="true" />
+        );
       case "knowledge":
-        return <BookOpen className="w-8 h-8 text-[#0072CE]" />;
+        return <BookOpen className="w-8 h-8 text-[var(--color-primary)]" aria-hidden="true" />;
       case "csr":
-        return <Coins className="w-8 h-8 text-[#72BF44]" />;
+        return <Coins className="w-8 h-8 text-[var(--color-secondary)]" aria-hidden="true" />;
       case "awareness":
-        return <Megaphone className="w-8 h-8 text-[#F7941D]" />;
+        return <Megaphone className="w-8 h-8 text-[var(--color-accent)]" aria-hidden="true" />;
       default:
-        return <BookOpen className="w-8 h-8 text-[#0072CE]" />;
+        return <BookOpen className="w-8 h-8 text-[var(--color-primary)]" aria-hidden="true" />;
     }
   };
 
   const getBorderColor = (colorClass: string) => {
     switch (colorClass) {
       case "tertiary":
-        return "border-l-4 border-l-[#F7941D]";
+        return "border-l-4 border-l-[var(--color-accent)]";
       case "secondary":
-        return "border-l-4 border-l-[#72BF44]";
+        return "border-l-4 border-l-[var(--color-secondary)]";
       case "primary":
-        return "border-l-4 border-l-[#0072CE]";
+        return "border-l-4 border-l-[var(--color-primary)]";
       default:
         return "";
     }
@@ -34,19 +37,22 @@ export default function Services() {
   return (
     <section
       id="services-section"
-      className="py-24 bg-[#0072CE] text-white scroll-mt-20 leading-tight"
+      className="py-24 bg-[var(--color-primary)] text-white scroll-mt-20 leading-tight"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        {/* Header content */}
+      <div className="mx-auto w-full max-w-[var(--content-max-width)] px-6 md:px-10">
         <div className="mb-16">
-          <h2 className="text-4xl font-extrabold font-headline mb-4">Core Programs</h2>
+          <StatusBadge status="draft" />
+          <h2 className="text-4xl font-extrabold font-headline mb-4">Proposed Program Areas</h2>
+          <Notice variant="info" className="!bg-white !text-slate-800 !border-slate-200">
+            All program areas listed here are proposed and under development. No active programs
+            currently exist.
+          </Notice>
           <p className="text-white/75 text-sm sm:text-base max-w-xl leading-relaxed">
             Community-focused programs designed to build awareness, develop skills, and create
             sustainable impact through collaborative partnerships.
           </p>
         </div>
 
-        {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {SERVICES_DATA.map((service) => (
             <motion.div
@@ -56,7 +62,7 @@ export default function Services() {
             >
               <div>
                 <span className="inline-block mb-6">{getServiceIcon(service.id)}</span>
-                <h4 className="text-xl font-bold font-headline mb-3 text-white">{service.title}</h4>
+                <h3 className="text-xl font-bold font-headline mb-3 text-white">{service.title}</h3>
                 <p className="text-white/70 text-xs sm:text-sm leading-relaxed">
                   {service.description}
                 </p>

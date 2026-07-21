@@ -1,28 +1,25 @@
-import { Link } from "react-router-dom";
+import { SectionHeading, Container, StatusBadge, Notice } from "../components/ui";
 import Contact from "../components/Contact";
+import { CONTACT_VERIFICATION } from "../content/siteContent";
 
 export default function ContactPage() {
   return (
     <>
-      <div className="pt-28 bg-[#f7f9fb]">
-        <div className="max-w-4xl mx-auto px-6 md:px-10 py-8 space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0072CE] font-headline">
-            Contact
-          </h1>
-          <div className="w-16 h-1 bg-[#72BF44]" />
-          <p className="text-[#44474e] text-base leading-relaxed max-w-2xl">
-            Have a question or want to get in touch? We&apos;d love to hear from you.
-          </p>
-        </div>
-      </div>
+      <section className="pt-32 pb-16 bg-[var(--color-bg)]">
+        <Container>
+          <SectionHeading title="Contact" subtitle="Get in touch with Navpahal" level={1} />
+
+          <div className="space-y-6 max-w-3xl">
+            <StatusBadge status="awaiting-verification" />
+
+            <Notice variant="info">
+              {CONTACT_VERIFICATION} Online submissions are disabled. No information entered here is
+              transmitted to Navpahal.
+            </Notice>
+          </div>
+        </Container>
+      </section>
       <Contact />
-      <div className="bg-white py-8">
-        <div className="max-w-4xl mx-auto px-6 md:px-10">
-          <Link to="/" className="text-sm font-bold text-[#0072CE] hover:underline">
-            &larr; Back to Home
-          </Link>
-        </div>
-      </div>
     </>
   );
 }
