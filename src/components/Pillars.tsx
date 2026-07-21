@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Users, Heart, GraduationCap, Building2, ExternalLink, X, CheckCircle } from "lucide-react";

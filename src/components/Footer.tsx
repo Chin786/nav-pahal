@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Share2, AlertCircle, ChevronRight } from "lucide-react";
 import { BRAND, SERVICE_BOUNDARY, FORM_DISCLOSURE } from "../content/siteContent";
 
@@ -12,7 +14,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-20 lg:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
           <div className="space-y-6">
-            <Link to="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <span className="text-xl font-extrabold tracking-tight font-headline text-white">
                 {BRAND.name.toUpperCase()}
               </span>
@@ -48,7 +50,7 @@ export default function Footer() {
             <ul className="space-y-3.5 text-sm font-semibold">
               <li>
                 <Link
-                  to="/"
+                  href="/"
                   className="hover:text-white text-slate-400 transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight
@@ -60,7 +62,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/about"
+                  href="/about"
                   className="hover:text-white text-slate-400 transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight
@@ -72,7 +74,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/programs"
+                  href="/programs"
                   className="hover:text-white text-slate-400 transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight
@@ -84,7 +86,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/contact"
+                  href="/contact"
                   className="hover:text-white text-slate-400 transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight
@@ -104,7 +106,7 @@ export default function Footer() {
             <ul className="space-y-3.5 text-slate-400 text-sm font-semibold">
               <li>
                 <Link
-                  to="/get-involved"
+                  href="/get-involved"
                   className="hover:text-white transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight
@@ -116,7 +118,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/programs"
+                  href="/programs"
                   className="hover:text-white transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight
@@ -128,7 +130,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/training"
+                  href="/training"
                   className="hover:text-white transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight
@@ -140,7 +142,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/impact"
+                  href="/impact"
                   className="hover:text-white transition-all flex items-center gap-1.5"
                 >
                   <ChevronRight

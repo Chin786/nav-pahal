@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { NAV_ITEMS } from "../content/siteContent";
 
@@ -7,7 +10,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const menuButtonRef = React.useRef<HTMLButtonElement>(null);
   const mobileMenuRef = React.useRef<HTMLDivElement>(null);
-  const location = useLocation();
+  const pathname = usePathname();
 
   const closeMobile = React.useCallback(() => {
     setMobileMenuOpen(false);
@@ -28,15 +31,15 @@ export default function Header() {
   }, [mobileMenuOpen, closeMobile]);
 
   const isActive = (path: string) => {
-    if (path === "/") return location.pathname === "/";
-    return location.pathname.startsWith(path);
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
   };
 
   return (
     <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-white/30 shadow-sm leading-tight">
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex justify-between items-center h-20">
         <Link
-          to="/"
+          href="/"
           className="flex items-center gap-3 focus-ring rounded"
           aria-label="Navpahal home"
         >
@@ -49,7 +52,7 @@ export default function Header() {
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.path}
-              to={item.path}
+              href={item.path}
               aria-current={isActive(item.path) ? "page" : undefined}
               className={`font-semibold text-sm transition-colors duration-300 focus-ring rounded px-1 py-2 ${
                 isActive(item.path)
@@ -64,7 +67,7 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <Link
-            to="/get-involved"
+            href="/get-involved"
             className="hidden md:inline-flex bg-gradient-to-r from-[var(--color-primary)] to-[#00B5E2] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-95 active:scale-95 transition-all shadow-md focus-ring"
           >
             Join Initiative
@@ -94,7 +97,7 @@ export default function Header() {
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.path}
-              to={item.path}
+              href={item.path}
               onClick={closeMobile}
               aria-current={isActive(item.path) ? "page" : undefined}
               className={`block w-full text-left font-semibold focus-ring rounded px-2 py-2 ${
@@ -107,7 +110,7 @@ export default function Header() {
             </Link>
           ))}
           <Link
-            to="/get-involved"
+            href="/get-involved"
             onClick={closeMobile}
             className="block w-full text-center bg-gradient-to-r from-[var(--color-primary)] to-[#00B5E2] text-white px-5 py-3 rounded-lg text-sm font-semibold mt-4 focus-ring"
           >

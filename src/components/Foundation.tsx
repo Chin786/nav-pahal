@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Eye, Rocket, Quote, RefreshCw, Heart } from "lucide-react";

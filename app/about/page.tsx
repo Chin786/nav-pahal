@@ -1,7 +1,14 @@
-import { SectionHeading, Container, StatusBadge, Notice } from "../components/ui";
-import { BRAND } from "../content/siteContent";
+import { SectionHeading, Container, StatusBadge, Notice } from "@/components/ui";
+import { BRAND } from "@/content/siteContent";
+import type { Metadata } from "next";
 
-export default function About() {
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Learn about Navpahal's proposed mission, vision, and operating principles for community empowerment.",
+};
+
+export default function AboutPage() {
   return (
     <section className="pt-32 pb-24 bg-[var(--color-bg)] min-h-screen">
       <Container>
