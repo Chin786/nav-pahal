@@ -8,20 +8,23 @@ Migrate the client-side Vite React SPA to a Next.js 16 App Router architecture t
 
 Base commit: `aa113ac`
 
-To roll back the migration:
+To roll back the migration using only non-destructive Git operations:
 
 ```bash
-# View the migration changes
-git log --oneline aa113ac..HEAD
+# View the migration commits since the base
+git log --oneline --reverse aa113ac..HEAD
 
-# Roll back to the pre-migration state
-git revert --no-commit HEAD~3..HEAD
+# Revert each migration commit in reverse order (newest first)
+git revert --no-commit <newest-commit-hash>
+git revert --no-commit <next-commit-hash>
 git commit -m "revert: roll back nextjs migration"
 
-# Or reset to the base commit (discards all migration work)
-# WARNING: This destroys all migration work on this branch
-git reset --hard aa113ac
+# Verify rollback
+npm ci
+npm run dev
 ```
+
+> Note: If the branch has additional non-migration commits beyond the migration, revert only the migration commits using `git revert <hash>` for each one, rather than a range revert.
 
 ## Files Removed
 
@@ -157,7 +160,7 @@ export const metadata: Metadata = {
 
 ### End-to-End Tests (Playwright)
 
-- `playwright.config.ts` updated: webServer uses `next start` on port 3000 (local) / 4173 (CI)
+- `playwright.config.ts` updated: webServer uses `npm run start` on port 4173
 - No test logic changes needed — same routes, same assertions
 
 ## Server / Client Component Decisions
@@ -184,7 +187,7 @@ export const metadata: Metadata = {
 
 ## Security Headers
 
-Configured in `next.config.ts` using the `headers()` function in `async` `rewrites`:
+Configured in `next.config.ts` using the `headers()` function:
 
 | Header                   | Value                                      |
 | ------------------------ | ------------------------------------------ |
@@ -207,21 +210,20 @@ Content Security Policy (CSP) is intentionally left for a future deployment task
 
 ## Rollback Procedure
 
-To revert to the Vite-based application:
+To revert to the Vite-based application using only `git revert`:
 
 ```bash
 # Identify the migration commits
 git log --oneline --reverse aa113ac..HEAD
 
-# Revert each migration commit in reverse order
-git revert --no-commit <newest-commit>
-# ... resolve conflicts if any
-git revert --no-commit <oldest-migration-commit>
+# Revert each migration commit in reverse order (newest first)
+git revert --no-commit <newest-commit-hash>
+git revert --no-commit <next-commit-hash>
 git commit -m "revert: roll back nextjs migration"
 
 # Verify rollback
 npm ci
-npm run dev  # should start Vite dev server on :5173
+npm run dev
 ```
 
-> Note: If the branch has additional commits beyond the migration, revert only the migration commits using `git revert <hash>` for each one, rather than a range revert.
+> Note: If the branch has additional non-migration commits beyond the migration, revert only the migration commits using `git revert <hash>` for each one, rather than a range revert.

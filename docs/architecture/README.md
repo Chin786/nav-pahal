@@ -98,4 +98,4 @@ The long-term target is a **modular monolith** backend with:
 - CI runs: format, lint, typecheck, unit tests, build, e2e tests
 - TypeScript strict mode is enforced
 - No secrets in source code
-- All routes are fully static — no server runtime required
+- All public pages are statically prerendered. The current deployment still requires a Next.js-compatible server or hosting platform to apply configured response headers and support future server capabilities.
