@@ -44,13 +44,17 @@ export default function ContactPage() {
               Send us a Message
             </h2>
             <Notice variant="info">{FORM_DISCLOSURE}</Notice>
-            <div className="mt-6 space-y-4">
+            <form className="mt-6 space-y-4" aria-label="Contact form (not yet active)">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1">
+                  <label
+                    htmlFor="contact-first-name"
+                    className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1"
+                  >
                     First Name
                   </label>
                   <input
+                    id="contact-first-name"
                     disabled
                     type="text"
                     placeholder="John"
@@ -58,10 +62,14 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1">
+                  <label
+                    htmlFor="contact-last-name"
+                    className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1"
+                  >
                     Last Name
                   </label>
                   <input
+                    id="contact-last-name"
                     disabled
                     type="text"
                     placeholder="Doe"
@@ -70,10 +78,14 @@ export default function ContactPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1">
+                <label
+                  htmlFor="contact-subject"
+                  className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1"
+                >
                   Subject
                 </label>
                 <input
+                  id="contact-subject"
                   disabled
                   type="text"
                   placeholder="Partnership Inquiry"
@@ -81,10 +93,14 @@ export default function ContactPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1">
+                <label
+                  htmlFor="contact-message"
+                  className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1"
+                >
                   Message
                 </label>
                 <textarea
+                  id="contact-message"
                   disabled
                   rows={4}
                   placeholder="Tell us how we can collaborate..."
@@ -97,7 +113,7 @@ export default function ContactPage() {
               >
                 Send Message
               </button>
-            </div>
+            </form>
           </div>
         </div>
         <div className="mt-16" data-testid="service-boundary">

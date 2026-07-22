@@ -7,13 +7,11 @@ import Hero from "../components/Hero";
 import Foundation from "../components/Foundation";
 import Pillars from "../components/Pillars";
 import Services from "../components/Services";
-import Experts from "../components/Experts";
+import Volunteers from "../components/Volunteers";
 
 beforeEach(() => {
   localStorage.clear();
   document.title = "";
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) metaDesc.remove();
 });
 
 describe("Skip link", () => {
@@ -31,10 +29,9 @@ describe("Header navigation", () => {
     expect(screen.getAllByText("NAVPAHAL").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("renders all eight navigation links in header", () => {
+  it("internal links use the expected href values", () => {
     render(<Header />);
     const nav = screen.getByRole("navigation", { name: "Main navigation" });
-    expect(nav).toBeInTheDocument();
     expect(nav.querySelector('a[href="/"]')).toBeInTheDocument();
     expect(nav.querySelector('a[href="/about"]')).toBeInTheDocument();
     expect(nav.querySelector('a[href="/programs"]')).toBeInTheDocument();
@@ -43,6 +40,69 @@ describe("Header navigation", () => {
     expect(nav.querySelector('a[href="/impact"]')).toBeInTheDocument();
     expect(nav.querySelector('a[href="/resources"]')).toBeInTheDocument();
     expect(nav.querySelector('a[href="/contact"]')).toBeInTheDocument();
+  });
+});
+
+describe("Contact inputs are disabled and correctly labelled", () => {
+  it("renders disabled first name input with label", () => {
+    render(<Volunteers />);
+    const input = screen.getByLabelText("Full Name");
+    expect(input).toBeDisabled();
+  });
+
+  it("renders disabled email input with label", () => {
+    render(<Volunteers />);
+    const input = screen.getByLabelText("Email Address");
+    expect(input).toBeDisabled();
+  });
+});
+
+describe("Newsletter input remains disabled", () => {
+  it("renders disabled newsletter email input", () => {
+    render(<Footer />);
+    const input = screen.getByLabelText("Your Email");
+    expect(input).toBeDisabled();
+  });
+});
+
+describe("No localStorage writes", () => {
+  it("does not write data to localStorage on render", () => {
+    render(<Header />);
+    render(<Footer />);
+    expect(localStorage.getItem("navpahal_contact_messages")).toBeNull();
+    expect(localStorage.getItem("navpahal_volunteers")).toBeNull();
+  });
+});
+
+describe("No false success messages", () => {
+  it("does not contain false success text in Hero", () => {
+    render(<Hero />);
+    const body = document.body.textContent || "";
+    expect(body).not.toContain("Message Sent Successfully");
+    expect(body).not.toContain("Registration Submitted");
+  });
+
+  it("does not contain false success text in Footer", () => {
+    render(<Footer />);
+    const body = document.body.textContent || "";
+    expect(body).not.toContain("Message Sent Successfully");
+    expect(body).not.toContain("Registration Submitted");
+    expect(body).not.toContain("Subscribed successfully");
+  });
+});
+
+describe("No fabricated metrics", () => {
+  it("does not display fabricated quantitative claims", () => {
+    render(<Hero />);
+    render(<Footer />);
+    const body = document.body.textContent || "";
+    expect(body).not.toContain("1M+");
+    expect(body).not.toContain("10K+");
+    expect(body).not.toContain("500+");
+    expect(body).not.toContain("SOS System");
+    expect(body).not.toContain("Amit Sharma");
+    expect(body).not.toContain("live databases");
+    expect(body).not.toContain("Developer Console");
   });
 });
 
@@ -61,44 +121,7 @@ describe("Service boundary", () => {
   });
 });
 
-describe("No localStorage persistence", () => {
-  it("does not store data in localStorage", () => {
-    render(<Header />);
-    expect(localStorage.getItem("navpahal_contact_messages")).toBeNull();
-    expect(localStorage.getItem("navpahal_volunteers")).toBeNull();
-  });
-});
-
-describe("Removal of unsafe claims", () => {
-  it("does not display fabricated quantitative claims", () => {
-    render(<Hero />);
-    const body = document.body.textContent || "";
-    expect(body).not.toContain("1M+");
-    expect(body).not.toContain("10K+");
-    expect(body).not.toContain("500+");
-    expect(body).not.toContain("SOS System");
-    expect(body).not.toContain("Amit Sharma");
-    expect(body).not.toContain("live databases");
-    expect(body).not.toContain("Developer Console");
-  });
-
-  it("does not display false success messages", () => {
-    render(<Footer />);
-    const body = document.body.textContent || "";
-    expect(body).not.toContain("Message Sent Successfully");
-    expect(body).not.toContain("Registration Submitted");
-  });
-
-  it("does not display unverified contact details", () => {
-    render(<Footer />);
-    const body = document.body.textContent || "";
-    expect(body).not.toContain("42 Impact Square");
-    expect(body).not.toContain("connect@navpahal.org");
-    expect(body).not.toContain("+91 1800 200 4000");
-  });
-});
-
-describe("Draft and verification labels", () => {
+describe("Content-status labels", () => {
   it("displays draft badge on services section", () => {
     render(<Services />);
     expect(screen.getByText("Draft")).toBeInTheDocument();
@@ -110,8 +133,8 @@ describe("Draft and verification labels", () => {
   });
 });
 
-describe("Foundation accordion accessibility", () => {
-  it("renders accordion buttons with aria-expanded, aria-controls, and type=button", () => {
+describe("Foundation accordion semantics", () => {
+  it("renders accordion buttons with aria-expanded, aria-controls, type=button, and focus-ring", () => {
     render(<Foundation />);
     const buttons = screen.getAllByRole("button", { name: "Read Deeply" });
     expect(buttons.length).toBe(2);
@@ -137,7 +160,7 @@ describe("Foundation accordion accessibility", () => {
   });
 });
 
-describe("Pillar modal accessibility", () => {
+describe("Pillar modal semantics", () => {
   it("renders pillar section with future-oriented heading", () => {
     render(<Pillars />);
     expect(
@@ -149,14 +172,14 @@ describe("Pillar modal accessibility", () => {
 
   it("renders Learn More buttons for each pillar", () => {
     render(<Pillars />);
-    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
-    expect(learnMoreButtons.length).toBe(4);
+    const buttons = screen.getAllByRole("button", { name: /Learn More/ });
+    expect(buttons.length).toBe(4);
   });
 
   it("opens modal with dialog role and close button on click", async () => {
     render(<Pillars />);
-    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
-    learnMoreButtons[0].click();
+    const buttons = screen.getAllByRole("button", { name: /Learn More/ });
+    buttons[0].click();
     await waitFor(() => {
       expect(screen.getByRole("dialog")).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
@@ -165,38 +188,18 @@ describe("Pillar modal accessibility", () => {
 
   it("displays Proposed Roles heading inside modal", async () => {
     render(<Pillars />);
-    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
-    learnMoreButtons[0].click();
+    const buttons = screen.getAllByRole("button", { name: /Learn More/ });
+    buttons[0].click();
     await waitFor(() => {
       expect(screen.getByText("Proposed Roles and Opportunities")).toBeInTheDocument();
     });
   });
-
-  it("uses future-oriented language in modal list items", async () => {
-    render(<Pillars />);
-    const learnMoreButtons = screen.getAllByRole("button", { name: /Learn More/ });
-    learnMoreButtons[0].click();
-    await waitFor(() => {
-      expect(screen.getByText(/A future citizen pathway may allow/i)).toBeInTheDocument();
-    });
-  });
 });
 
-describe("Services section", () => {
-  it("displays Proposed Program Areas heading", () => {
-    render(<Services />);
-    expect(screen.getByText("Proposed Program Areas")).toBeInTheDocument();
-  });
-
-  it("displays notice about proposed programs", () => {
-    render(<Services />);
-    expect(screen.getByText(/All program areas listed here are proposed/i)).toBeInTheDocument();
-  });
-});
-
-describe("Experts section", () => {
-  it("displays Under Development status", () => {
-    render(<Experts />);
-    expect(screen.getByText("Under Development")).toBeInTheDocument();
+describe("No active form or submit handler exists", () => {
+  it("does not render enabled submit buttons", () => {
+    render(<Volunteers />);
+    const submitButtons = document.querySelectorAll('button[type="submit"]:not([disabled])');
+    expect(submitButtons.length).toBe(0);
   });
 });

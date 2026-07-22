@@ -48,12 +48,19 @@ export default function GetInvolvedPage() {
               Volunteer Registration
             </h2>
             <Notice variant="info">{FORM_DISCLOSURE}</Notice>
-            <div className="mt-6 space-y-4">
+            <form
+              className="mt-6 space-y-4"
+              aria-label="Volunteer registration form (not yet active)"
+            >
               <div>
-                <label className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1">
+                <label
+                  htmlFor="involvement-full-name"
+                  className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1"
+                >
                   Full Name
                 </label>
                 <input
+                  id="involvement-full-name"
                   disabled
                   type="text"
                   placeholder="Full Name"
@@ -61,10 +68,14 @@ export default function GetInvolvedPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1">
+                <label
+                  htmlFor="involvement-email"
+                  className="block text-sm font-semibold text-[var(--color-text-muted)] mb-1"
+                >
                   Email Address
                 </label>
                 <input
+                  id="involvement-email"
                   disabled
                   type="email"
                   placeholder="Email Address"
@@ -77,7 +88,7 @@ export default function GetInvolvedPage() {
               >
                 Submit Application
               </button>
-            </div>
+            </form>
           </div>
         </div>
         <div className="mt-16" data-testid="service-boundary">
