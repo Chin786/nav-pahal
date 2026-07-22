@@ -1,11 +1,10 @@
-import { AlertCircle, CheckCircle, Info, AlertTriangle, X } from "lucide-react";
+import { AlertCircle, CheckCircle, Info, AlertTriangle } from "lucide-react";
 import type { ReactNode } from "react";
 
 interface NoticeProps {
   variant?: "info" | "success" | "warning" | "error";
   children: ReactNode;
   className?: string;
-  onDismiss?: () => void;
 }
 
 const ICONS = {
@@ -24,12 +23,7 @@ const STYLES: Record<string, string> = {
   error: "bg-[var(--color-error)]/10 border-[var(--color-error)]/20 text-[var(--color-error)]",
 };
 
-export default function Notice({
-  variant = "info",
-  children,
-  className = "",
-  onDismiss,
-}: NoticeProps) {
+export default function Notice({ variant = "info", children, className = "" }: NoticeProps) {
   const Icon = ICONS[variant];
 
   return (
@@ -39,15 +33,6 @@ export default function Notice({
     >
       <Icon className="w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
       <span className="flex-1">{children}</span>
-      {onDismiss && (
-        <button
-          onClick={onDismiss}
-          className="shrink-0 p-1 rounded hover:bg-black/5 transition-colors"
-          aria-label="Dismiss"
-        >
-          <X className="w-4 h-4" />
-        </button>
-      )}
     </div>
   );
 }

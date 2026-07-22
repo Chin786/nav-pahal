@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { MapPin, Mail, Phone, Send, AlertCircle } from "lucide-react";
 import { FORM_DISCLOSURE, CONTACT_VERIFICATION } from "../content/siteContent";

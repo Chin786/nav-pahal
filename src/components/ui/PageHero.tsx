@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 interface SectionHeadingProps {
@@ -59,13 +59,18 @@ export function SectionHeading({
 }
 
 interface ButtonLinkProps {
-  to: string;
+  href: string;
   children: ReactNode;
   variant?: "primary" | "secondary" | "accent" | "outline";
   className?: string;
 }
 
-export function ButtonLink({ to, children, variant = "primary", className = "" }: ButtonLinkProps) {
+export function ButtonLink({
+  href,
+  children,
+  variant = "primary",
+  className = "",
+}: ButtonLinkProps) {
   const base =
     "inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all focus-ring";
   const variants: Record<string, string> = {
@@ -80,7 +85,7 @@ export function ButtonLink({ to, children, variant = "primary", className = "" }
   };
 
   return (
-    <Link to={to} className={`${base} ${variants[variant]} ${className}`}>
+    <Link href={href} className={`${base} ${variants[variant]} ${className}`}>
       {children}
     </Link>
   );

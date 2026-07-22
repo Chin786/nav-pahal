@@ -1,28 +1,37 @@
 # Navpahal Architecture
 
-## Current State — Frontend Baseline (Sprint 0)
+## Current State — Frontend Baseline (Sprint 2)
 
-The application is a **client-side React SPA** built with:
+The application is a **Next.js 16 App Router** application built with:
 
 - **React 19** + **TypeScript** (strict mode)
-- **Vite** for dev server and production builds
-- **Tailwind CSS 4** for styling
-- **Motion** (Framer Motion) for animations
-- **React Router** for client-side routing
+- **Next.js 16** with Turbopack for development, static generation for production
+- **Tailwind CSS 4** via `@tailwindcss/postcss` for styling
+- **Motion** for client-side animations
+- **Lucide React** for icons
+
+### Architecture
+
+- **Server Components by default** — pages and leaf components are Server Components
+- **Client Components** — components using React hooks, browser APIs, or Motion have a `"use client"` directive
+- **Next.js Metadata API** — per-route `<title>` and `<meta name="description">` defined in each `page.tsx`
+- **Static generation** — all eight public routes are statically generated at build time
+- **Layout** — `app/layout.tsx` provides shared layout with SkipLink, Header, Footer, and `<main id="main-content">` landmark
+- **Route-folder structure** — each route has its own folder under `app/` with a `page.tsx` file
 
 ### Routes
 
-| Path | Page | Description |
-|------|------|-------------|
-| `/` | Home | Landing page with all core sections |
-| `/about` | About | Mission and vision (placeholder) |
-| `/programs` | Programs | Program listings (placeholder) |
-| `/training` | Training | Training content (placeholder) |
+| Path            | Page         | Description                             |
+| --------------- | ------------ | --------------------------------------- |
+| `/`             | Home         | Landing page with all core sections     |
+| `/about`        | About        | Mission and vision (placeholder)        |
+| `/programs`     | Programs     | Program listings (placeholder)          |
+| `/training`     | Training     | Training content (placeholder)          |
 | `/get-involved` | Get Involved | Volunteer registration (disabled state) |
-| `/impact` | Impact | Impact metrics (placeholder) |
-| `/resources` | Resources | Resource center (placeholder) |
-| `/contact` | Contact | Contact form (disabled state) |
-| `*` | NotFound | 404 page |
+| `/impact`       | Impact       | Impact metrics (placeholder)            |
+| `/resources`    | Resources    | Resource center (placeholder)           |
+| `/contact`      | Contact      | Contact form (disabled state)           |
+| `*`             | NotFound     | 404 page                                |
 
 ### Form Submissions
 
@@ -43,19 +52,31 @@ No contact details are displayed. The placeholder text reads:
 
 ### What Does Not Exist Yet
 
+- No Route Handlers (API routes)
+- No Server Actions
 - No backend, API, or database
 - No authentication or authorization
-- No server-side rendering
 - No CMS or admin interface
 - No emergency SOS capability
 - No medical consultation workflow
 - No data collection or form submission processing
 
+### Security Headers
+
+`next.config.ts` configures the following HTTP security headers:
+
+- `X-Content-Type-Options: nosniff`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `X-Frame-Options: DENY`
+- `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+
+Content Security Policy (CSP) is not yet configured — it remains a future deployment task.
+
 ## Target Architecture — Modular Monolith
 
 The long-term target is a **modular monolith** backend with:
 
-- **API layer**: REST or GraphQL endpoints
+- **API layer**: Route Handlers or external API
 - **Auth service**: User registration, login, roles
 - **Data layer**: PostgreSQL or equivalent
 - **Admin panel**: For verified administrators only
@@ -77,3 +98,4 @@ The long-term target is a **modular monolith** backend with:
 - CI runs: format, lint, typecheck, unit tests, build, e2e tests
 - TypeScript strict mode is enforced
 - No secrets in source code
+- All public pages are statically prerendered. The current deployment still requires a Next.js-compatible server or hosting platform to apply configured response headers and support future server capabilities.

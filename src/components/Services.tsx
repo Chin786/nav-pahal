@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { GraduationCap, BookOpen, Coins, Megaphone } from "lucide-react";
 import { SERVICES_DATA } from "../data";

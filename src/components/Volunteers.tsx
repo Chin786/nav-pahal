@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Check, Send, User, Mail, Compass, HelpCircle } from "lucide-react";
 import { FORM_DISCLOSURE } from "../content/siteContent";

@@ -1,6 +1,8 @@
+"use client";
+
 import { motion } from "motion/react";
 import { ArrowRight, Users, BookOpen, ShieldCheck } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { HERO_CONTENT, BRAND } from "../content/siteContent";
 import { StatusBadge } from "../components/ui";
 
@@ -50,13 +52,13 @@ export default function Hero() {
 
           <div className="flex flex-wrap items-center gap-5 pt-2">
             <Link
-              to={HERO_CONTENT.ctaPrimary.to}
+              href={HERO_CONTENT.ctaPrimary.to}
               className="bg-gradient-to-r from-[var(--color-accent)] to-[#e67e17] text-white px-8 py-4 rounded-xl font-bold text-sm tracking-wide transition-all shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20 hover:-translate-y-0.5 active:translate-y-0 active:scale-98"
             >
               {HERO_CONTENT.ctaPrimary.label}
             </Link>
             <Link
-              to={HERO_CONTENT.ctaSecondary.to}
+              href={HERO_CONTENT.ctaSecondary.to}
               className="flex items-center gap-2 text-[var(--color-primary)] font-bold text-sm hover:translate-x-1.5 transition-transform"
             >
               <span>{HERO_CONTENT.ctaSecondary.label}</span>

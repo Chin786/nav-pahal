@@ -4,25 +4,27 @@ Aware. Engage. Empower.
 
 A community empowerment platform bridging institutional resources with grassroots needs for sustainable community development.
 
-## Current Scope (Sprint 1)
+## Current Scope (Sprint 2)
 
-This repository contains the **frontend MVP** of the Navpahal platform. It is a client-side React single-page application with **no backend, no database, and no data collection**.
+This repository contains the **frontend** of the Navpahal platform. It is a **Next.js 16 App Router** application with **no backend, no database, and no data collection**.
 
-### Sprint 1 — Content, Design System, and Accessibility Foundation
+### Sprint 2 — Next.js App Router Migration
 
-Sprint 1 establishes a consistent, accessible, and maintainable public NGO website foundation:
+Sprint 2 migrates the client-side SPA to a Next.js 16 App Router architecture:
 
-- **Design tokens**: CSS custom properties for brand colours, spacing, typography, shadows, and focus rings
-- **Reusable UI components**: Container, SectionHeading, ButtonLink, Notice, StatusBadge, PlaceholderPanel
-- **Site navigation**: `aria-current="page"` on active links, keyboard-operable mobile menu, Escape to close, focus management
-- **Skip navigation**: "Skip to main content" link visible on keyboard focus
-- **Landmarks**: Unique `<main>` landmark, accessible `<footer>`, page-level `<h1>` on every route
-- **Centralized content**: Typed content structure in `src/content/siteContent.ts`
-- **Content integrity**: Status badges (Draft, Proposed, Awaiting Verification, Under Development)
-- **Page metadata**: Route-aware document titles and meta descriptions
-- **Accessibility**: WCAG-friendly contrast, focus indicators, `aria-hidden` on decorative icons, `prefers-reduced-motion`
-- **Disabled forms**: Contact, volunteer, and newsletter forms remain disabled with disclosure notices
-- **No fabricated claims**: All unsafe content removed and safeguarded
+- **Next.js 16** with App Router, Turbopack, and static generation
+- **React 19** with automatic JSX runtime
+- **TypeScript** strict mode
+- **Tailwind CSS 4** through `@tailwindcss/postcss`
+- **Server Components by default** — Client Components only where React hooks, browser APIs, or motion are required
+- **Eight public routes**: `/`, `/about`, `/programs`, `/training`, `/get-involved`, `/impact`, `/resources`, `/contact`
+- **Static governed content** — all content is statically generated at build time
+- **Metadata API** — per-route `<title>` and `<meta name="description">`
+- **Disabled forms** — Contact, volunteer, and newsletter forms remain disabled with disclosure notices
+- **No personal information** is collected, stored, or transmitted
+- **No fabricated claims** — all unsafe content removed and safeguarded
+- **Security headers** configured via `next.config.ts` (X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy)
+- **CSP remains a future deployment task** — Content Security Policy is not yet configured
 
 ### Important Notices
 
@@ -63,12 +65,14 @@ See [docs/content-governance.md](docs/content-governance.md) for the full govern
 ### Known Limitations
 
 - No backend, authentication, or database
+- No Route Handlers or Server Actions
 - All forms are disabled (no data submission)
 - No verified contact details published
 - No verified impact metrics
 - No certification or accreditation offered
 - Not yet tested for formal WCAG compliance
 - Canonical domain not yet confirmed
+- Content Security Policy not yet configured
 
 ## Prerequisites
 
@@ -88,9 +92,10 @@ The app runs at `http://localhost:3000`.
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Production build (typecheck + vite build) |
-| `npm run preview` | Preview production build |
+| `npm run dev` | Start Next.js development server |
+| `npm run build` | Production build with TypeScript check |
+| `npm run start` | Start production server |
+| `npm run clean` | Remove build output directories (`.next`, `out`, `dist`) |
 | `npm run format:check` | Check formatting with Prettier |
 | `npm run format` | Auto-format code |
 | `npm run lint` | Run ESLint |
@@ -98,11 +103,11 @@ The app runs at `http://localhost:3000`.
 | `npm run test` | Run unit tests with Vitest |
 | `npm run test:watch` | Run tests in watch mode |
 | `npm run test:coverage` | Run tests with coverage report |
-| `npm run test:e2e` | Run Playwright e2e tests against production build |
+| `npm run test:e2e` | Run Playwright e2e tests (builds and starts production server) |
 | `npm run check` | Run all checks: format, lint, typecheck, unit tests, build |
 | `npm run check-all` | Run all checks including e2e tests |
 
-## Current Routes
+## Routes
 
 | Route | Page |
 |-------|------|
@@ -120,7 +125,7 @@ The app runs at `http://localhost:3000`.
 
 See [docs/architecture/README.md](docs/architecture/README.md) for the full architecture plan.
 
-- **Today**: Frontend-only SPA, no backend, no database, no data collection
+- **Today**: Next.js 16 static frontend, no backend, no database, no data collection
 - **Target**: Modular monolith backend introduced through approved vertical slices
 - **Not yet**: Authentication, API, admin panel, emergency features, form submissions
 

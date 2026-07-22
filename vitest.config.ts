@@ -5,7 +5,13 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "next/navigation": path.resolve(__dirname, "./src/test/__mocks__/next-navigation.ts"),
+      "next/link": path.resolve(__dirname, "./src/test/__mocks__/next-link.tsx"),
     },
+  },
+  esbuild: {
+    jsx: "automatic",
+    jsxImportSource: "react",
   },
   test: {
     globals: true,
